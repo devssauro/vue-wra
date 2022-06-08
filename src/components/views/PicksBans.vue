@@ -44,6 +44,8 @@
                       :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
                       hide-default-footer />
                   </v-card>
+                </v-col>
+                <v-col cols="6">
                   <v-card>
                     <v-card-title>Win Rate</v-card-title>
                     <v-data-table :headers="prioHeaders" :items="resumeWR" item-key="name" group-by="side" show-group-by
@@ -51,9 +53,9 @@
                       hide-default-footer />
                   </v-card>
                 </v-col>
-                <v-col cols="3">
+                <v-col cols="6">
                   <v-data-table :headers="pickHeaders" :items="bluePicks" item-key="name" sort-by="qty_win"
-                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc>
+                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -64,9 +66,9 @@
                     </template>
                   </v-data-table>
                 </v-col>
-                <v-col cols="3">
+                <v-col cols="6">
                   <v-data-table :headers="pickHeaders" :items="redPicks" item-key="name" sort-by="qty_win"
-                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc>
+                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -84,7 +86,7 @@
               <v-row>
                 <v-col cols="6">
                   <v-data-table :headers="banHeaders" :items="blueBans" item-key="name" sort-by="qty_win"
-                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc>
+                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -98,7 +100,7 @@
                 </v-col>
                 <v-col cols="6">
                   <v-data-table :headers="banHeaders" :items="redBans" item-key="name" sort-by="qty_win"
-                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc>
+                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -166,6 +168,7 @@
       bluePicks: [],
       redPicks: [],
       resume: [],
+      resumeWR: [],
       blueBans: [],
       redBans: [],
       presence: {
