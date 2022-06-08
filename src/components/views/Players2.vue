@@ -149,7 +149,7 @@
         <v-col cols="12">
           <v-tabs-items v-model="tab">
             <v-tab-item>
-              <v-data-table :headers="headers" :items="playerChampions" :items-per-page="-1" class="elevation-0">
+              <v-data-table hide-default-footer :headers="headers" :items="playerChampions" :items-per-page="-1" class="elevation-0">
                 <template v-slot:item.name="{ item }">
                   <v-avatar rounded size="36">
                     <img :alt="item.champion" :src="getImg(item.name)">
@@ -217,7 +217,7 @@
             <v-tab-item>
               <champion-field @change="championChanged" class="px-4 pt-2" :solo="false" side="grey darken-1"
                 :map="search" label="Selecione o champion" field="champion_id" :champions="playerChampions" />
-              <v-data-table :headers="championHeaders" :items="championsWith" :items-per-page="-1" sort-by="qty_win"
+              <v-data-table hide-default-footer :headers="championHeaders" :items="championsWith" :items-per-page="-1" sort-by="qty_win"
                 sort-desc show-group-by group-by="role" class="elevation-0">
                 <template v-slot:item.champion_name="{ item }">
                   <v-avatar rounded size="36">
@@ -235,7 +235,7 @@
             <v-tab-item>
               <champion-field @change="championChanged" class="px-4 pt-2" :solo="false" side="grey darken-1"
                 :map="search" label="Selecione o champion" field="champion_id" :champions="playerChampions" />
-              <v-data-table :headers="championHeaders" :items="championsAgainst" :items-per-page="-1" sort-by="qty_win"
+              <v-data-table hide-default-footer :headers="championHeaders" :items="championsAgainst" :items-per-page="-1" sort-by="qty_win"
                 sort-desc group-by="role" class="elevation-0">
                 <template v-slot:item.champion_name="{ item }">
                   <v-avatar rounded size="36">
@@ -461,7 +461,9 @@
       getPlayersFromRole() {
         axios.get(`v1/view/player/role/${this.search.role}`, {params: this.search}).then(res => {
           this.players = res.data.players;
-          this.selectedPlayer = this.players[0];
+          const _players = this.players.filter(c => c.id === this.selectedPlayer.id);
+          if (this.selectedPlayer.id === null || _players.length === 0)
+            this.selectedPlayer = this.players[0];
           this.search.player_id = this.selectedPlayer.id;
           this.getAllInfo();
         });

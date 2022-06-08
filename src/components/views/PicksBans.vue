@@ -38,10 +38,18 @@
             <v-tab-item>
               <v-row>
                 <v-col cols="6">
-                  <v-data-table :headers="prioHeaders" :items="resume" item-key="name" group-by="side"
-                    show-group-by :items-per-page="-1" :sort-by="['side', 'rotation']"
-                    :sort-desc="[false, false]" multi-sort>
-                  </v-data-table>
+                  <v-card>
+                    <v-card-title>Pick Rate</v-card-title>
+                    <v-data-table :headers="prioHeaders" :items="resume" item-key="name" group-by="side" show-group-by
+                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
+                      hide-default-footer />
+                  </v-card>
+                  <v-card>
+                    <v-card-title>Win Rate</v-card-title>
+                    <v-data-table :headers="prioHeaders" :items="resumeWR" item-key="name" group-by="side" show-group-by
+                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
+                      hide-default-footer />
+                  </v-card>
                 </v-col>
                 <v-col cols="3">
                   <v-data-table :headers="pickHeaders" :items="bluePicks" item-key="name" sort-by="qty_win"
@@ -106,61 +114,10 @@
             </v-tab-item>
             <v-tab-item>
               <v-row>
-                <v-col>
-                  <v-data-table dense :headers="presenceHeaders" :items="presence.baron" item-key="name"
-                    :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort :items-per-page="-1">
-                    <template v-slot:item.champion_name="{ item }">
-                      <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
-                      </v-avatar>
-                      <!-- <span class="pl-2 subtitle-1">
-                        {{item.champion_name}}
-                      </span> -->
-                    </template>
-                  </v-data-table>
-                </v-col>
-                <v-col>
-                  <v-data-table dense :headers="presenceHeaders" :items="presence.jungle" item-key="name"
-                    :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort :items-per-page="-1">
-                    <template v-slot:item.champion_name="{ item }">
-                      <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
-                      </v-avatar>
-                      <!-- <span class="pl-2 subtitle-1">
-                        {{item.champion_name}}
-                      </span> -->
-                    </template>
-                  </v-data-table>
-                </v-col>
-                <v-col>
-                  <v-data-table dense :headers="presenceHeaders" :items="presence.mid" item-key="name"
-                    :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort :items-per-page="-1">
-                    <template v-slot:item.champion_name="{ item }">
-                      <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
-                      </v-avatar>
-                      <!-- <span class="pl-2 subtitle-1">
-                        {{item.champion_name}}
-                      </span> -->
-                    </template>
-                  </v-data-table>
-                </v-col>
-                <v-col>
-                  <v-data-table dense :headers="presenceHeaders" :items="presence.dragon" item-key="name"
-                    :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort :items-per-page="-1">
-                    <template v-slot:item.champion_name="{ item }">
-                      <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
-                      </v-avatar>
-                      <!-- <span class="pl-2 subtitle-1">
-                        {{item.champion_name}}
-                      </span> -->
-                    </template>
-                  </v-data-table>
-                </v-col>
-                <v-col>
-                  <v-data-table dense :headers="presenceHeaders" :items="presence.sup" item-key="name"
-                    :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort :items-per-page="-1">
+                <v-col v-for="role in ['baron', 'jungle', 'mid', 'dragon', 'sup']" :key="role">
+                  <v-data-table dense :headers="presenceHeaders" :items="presence[role]" item-key="name"
+                    hide-default-footer :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort
+                    :items-per-page="-1">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -401,6 +358,7 @@
           this.bluePicks = res.data.blue_picks;
           this.redPicks = res.data.red_picks;
           this.resume = res.data.abstract;
+          this.resumeWR = res.data.wr_rotation;
         });
       },
       getBanRotations() {

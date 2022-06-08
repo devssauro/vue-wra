@@ -150,7 +150,7 @@
         <v-col cols="12">
           <v-tabs-items v-model="tab">
             <v-tab-item>
-              <v-data-table :headers="championHeaders" :items="championsWith" :items-per-page="-1" sort-by="qty_win"
+              <v-data-table hide-default-footer :headers="championHeaders" :items="championsWith" :items-per-page="-1" sort-by="qty_win"
                 sort-desc show-group-by group-by="role" class="elevation-0">
                 <template v-slot:item.champion_name="{ item }">
                   <v-avatar rounded size="36">
@@ -166,7 +166,7 @@
               </v-data-table>
             </v-tab-item>
             <v-tab-item>
-              <v-data-table :headers="championHeaders" :items="championsAgainst" :items-per-page="-1" sort-by="qty_win"
+              <v-data-table hide-default-footer :headers="championHeaders" :items="championsAgainst" :items-per-page="-1" sort-by="qty_win"
                 sort-desc show-group-by group-by="role" class="elevation-0">
                 <template v-slot:item.champion_name="{ item }">
                   <v-avatar rounded size="36">
@@ -182,7 +182,7 @@
               </v-data-table>
             </v-tab-item>
             <v-tab-item>
-              <v-data-table :headers="playerHeaders" :items="players" :items-per-page="-1" item-key="nickname"
+              <v-data-table hide-default-footer :headers="playerHeaders" :items="players" :items-per-page="-1" item-key="nickname"
                 :sort-by="['qty_win', 'qty_games']" :sort-desc="[true, true]" multi-sort class="elevation-0">
                 <template v-slot:item.gpm="{ item }">
                   {{item.gpm}}
@@ -453,7 +453,9 @@
       getChampionsFromRole() {
         axios.get(`v1/view/champion/role/${this.search.role}`, {params: this.search}).then(res => {
           this.champions = res.data.champions;
-          this.selectedChampion = this.champions[0];
+          const _champions = this.champions.filter(c => c.id === this.selectedChampion.id);
+          if (this.selectedChampion.id === null || _champions.length === 0)
+            this.selectedChampion = this.champions[0];
           this.search.champion_id = this.selectedChampion.id;
           this.getAllInfo();
         });
