@@ -1,19 +1,19 @@
 <template>
-  <v-main fill-height >
+  <v-main fill-height>
     <v-container>
       <v-row>
         <v-col cols="12">
           <v-sheet class="pt-6" rounded="lg">
             <v-row class="mx-1">
-              <v-select @change="roleChanged" class="px-4 mb-n5" outlined label="Role" v-model="search.roleId" :items="roles" item-text="title" item-value="tag" />
-              <champion-field @change="championChanged" class="px-4" :solo="false" side="grey darken-1" :map="search" label="Champion" field="championId" :champions="champions" />
+              <v-select @change="roleChanged" class="px-4 mb-n5" outlined label="Role" v-model="search.roleId"
+                :items="roles" item-text="title" item-value="tag" />
+              <champion-field @change="championChanged" class="px-4" :solo="false" side="grey darken-1" :map="search"
+                label="Champion" field="championId" :champions="champions" />
             </v-row>
           </v-sheet>
         </v-col>
         <v-col>
-          <v-sheet
-            rounded="lg"
-            class="pa-2">
+          <v-sheet rounded="lg" class="pa-2">
             <v-row>
               <v-col cols="3">
                 <v-card class="" outlined v-if="search.championId !== null && search.championId !== undefined">
@@ -23,14 +23,14 @@
                         <v-avatar size="100" rounded>
                           <img :alt="selectedChampion.name" :src="getImg(selectedChampion.name)">
                         </v-avatar>
-                          <v-col cols="8" class="py-0">
-                            <p class="display-1">
-                              {{selectedChampion.name}}
-                            </p>
-                            <p class="headline mb-0">
-                              {{avg_stats.avg_kills}} / {{avg_stats.avg_deaths}} / {{avg_stats.avg_assists}}
-                            </p>
-                          </v-col>
+                        <v-col cols="8" class="py-0">
+                          <p class="display-1">
+                            {{selectedChampion.name}}
+                          </p>
+                          <p class="headline mb-0">
+                            {{avg_stats.avg_kills}} / {{avg_stats.avg_deaths}} / {{avg_stats.avg_assists}}
+                          </p>
+                        </v-col>
                       </v-row>
                     </v-container>
                   </v-card-title>
@@ -98,16 +98,16 @@
                       </v-row>
                     </v-col>
                     <v-col cols="2" class="pr-2" align-self="center">
-                      <p class="display-2 mb-0 text-center">{{sideStats.total_wins}}</p>
+                      <p class="display-2 mb-0 text-center">{{sideStats.percent_total_wins}}</p>
                       <p class="title text-center">Vitórias</p>
                     </v-col>
                     <v-col cols="2">
                       <v-row class="text blue--text center">
-                        <span class="display-2 mb-0 text-center">{{sideStats.blue_wins}}</span>
+                        <span class="display-2 mb-0 text-center">{{sideStats.percent_total_blue_wins}}%</span>
                         <span class="overline">Vitórias</span>
                       </v-row>
                       <v-row class="text red--text center">
-                        <span class="display-2 mb-0 text-center">{{sideStats.red_wins}}</span>
+                        <span class="display-2 mb-0 text-center">{{ sideStats.percent_total_red_wins}}%</span>
                         <span class="overline">Vitórias</span>
                       </v-row>
                     </v-col>
@@ -117,7 +117,7 @@
               <v-col cols="4">
                 <v-card outlined>
                   <v-card-title class="pb-0">
-                    Top 3 jogados com em outras roles 
+                    Top 3 jogados com em outras roles
                   </v-card-title>
                   <v-card-text>
                     <v-list dense>
@@ -183,7 +183,8 @@
                             <v-list-item-subtitle>{{c.frequency}} vezes</v-list-item-subtitle>
                           </v-list-item-content>
                         </v-list-item>
-                        <v-divider inset :key="`${c.id}-${index}`" v-if="index < teams_against[search.roleId].length-1" />
+                        <v-divider inset :key="`${c.id}-${index}`"
+                          v-if="index < teams_against[search.roleId].length-1" />
                       </template>
                     </v-list>
                   </v-card-text>
@@ -193,15 +194,8 @@
           </v-sheet>
         </v-col>
         <v-col cols="12">
-          <v-data-table
-            :headers="headers"
-            :items="players"
-            :items-per-page="-1"
-            item-key="nickname"
-            :sort-by="['qty_win', 'qty_games']"
-            :sort-desc="[true, true]"
-            multi-sort
-            class="elevation-0" >
+          <v-data-table :headers="headers" :items="players" :items-per-page="-1" item-key="nickname"
+            :sort-by="['qty_win', 'qty_games']" :sort-desc="[true, true]" multi-sort class="elevation-0">
             <template v-slot:item.gpm="{ item }">
               {{item.gpm}}
               <span class="green--text" v-if="item.gpm > avg_stats.gpm">
@@ -260,15 +254,10 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-snackbar
-      v-model="snackbar">
+    <v-snackbar v-model="snackbar">
       {{ snackText }}
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="pink"
-          icon
-          v-bind="attrs"
-          @click="snackbar = false">
+        <v-btn color="pink" icon v-bind="attrs" @click="snackbar = false">
           <v-icon>close</v-icon>
         </v-btn>
       </template>

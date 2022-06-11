@@ -1,5 +1,5 @@
 <template>
-  <v-main fill-height >
+  <v-main fill-height>
     <v-container fluid>
       <v-row>
         <v-col cols="12">
@@ -53,7 +53,8 @@
                 </v-card>
               </v-col>
               <v-col cols="12" sm="12" md="7">
-                <v-card class="pa-2 py-3" outlined v-if="search.player_id !== null && search.player_id !== undefined">
+                <v-card class="pa-2 py-3" outlined
+                  v-if="search.champion_id !== null && search.champion_id !== undefined">
                   <v-row>
                     <v-col cols="6" class="text-center">
                       <span class="display-3">
@@ -66,65 +67,37 @@
                           <span class="display-1">
                             {{sideStats.blue_games}}
                           </span>
-                          <span class="headline">Jogos</span>
+                          <span class="headline">Jogos</span><br />
+                          <span>Blue side</span>
                         </v-col>
                         <v-col cols="6" class="red--text">
                           <span class="display-1">
                             {{sideStats.red_games}}
                           </span>
-                          <span class="headline">Jogos</span>
+                          <span class="headline">Jogos</span><br />
+                          <span>Red side</span>
                         </v-col>
                       </v-row>
                     </v-col>
                     <v-col cols="6" class="text-center">
                       <span class="display-3">
-                        {{sideStats.total_wins}}
+                        {{sideStats.percent_total_wins.toFixed(1)}}%
                       </span>
                       <span class="headline">Vitórias</span>
                       <v-divider class="my-2" />
                       <v-row>
                         <v-col cols="6" class="blue--text">
                           <span class="display-1">
-                            {{sideStats.blue_wins}}
-                          </span>
-                          <span class="headline">Vitórias</span>
+                            {{sideStats.percent_total_blue_wins.toFixed(1)}}%
+                          </span><br />
+                          <span>Vitórias blue side</span>
                         </v-col>
                         <v-col cols="6" class="red--text">
                           <span class="display-1">
-                            {{sideStats.red_wins}}
-                          </span>
-                          <span class="headline">Vitórias</span>
+                            {{ sideStats.percent_total_red_wins.toFixed(1)}}%
+                          </span><br />
+                          <span>Vitórias red side</span>
                         </v-col>
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                  <v-row class="mt-5 pb-6" v-if="false">
-                    <v-col cols="2" class="pr-2">
-                      <p class="display-2 mb-0 text-center">{{sideStats.total_games}}</p>
-                      <p class="title text-center">Jogos</p>
-                    </v-col>
-                    <v-col cols="2">
-                      <v-row class="text blue--text center">
-                        <span class="display-2 mb-0 text-center">{{sideStats.blue_games}}</span>
-                        <span class="overline">Jogos</span>
-                      </v-row>
-                      <v-row class="text red--text center">
-                        <span class="display-2 mb-0 text-center">{{sideStats.red_games}}</span>
-                        <span class="overline">Jogos</span>
-                      </v-row>
-                    </v-col>
-                    <v-col cols="2" class="pr-2" align-self="center">
-                      <p class="display-2 mb-0 text-center">{{sideStats.total_wins}}</p>
-                      <p class="title text-center">Vitórias</p>
-                    </v-col>
-                    <v-col cols="2">
-                      <v-row class="text blue--text center">
-                        <span class="display-2 mb-0 text-center">{{sideStats.blue_wins}}</span>
-                        <span class="overline">Vitórias</span>
-                      </v-row>
-                      <v-row class="text red--text center">
-                        <span class="display-2 mb-0 text-center">{{sideStats.red_wins}}</span>
-                        <span class="overline">Vitórias</span>
                       </v-row>
                     </v-col>
                   </v-row>
@@ -149,7 +122,8 @@
         <v-col cols="12">
           <v-tabs-items v-model="tab">
             <v-tab-item>
-              <v-data-table hide-default-footer :headers="headers" :items="playerChampions" :items-per-page="-1" class="elevation-0">
+              <v-data-table hide-default-footer :headers="headers" :items="playerChampions" :items-per-page="-1"
+                class="elevation-0" :sort-by="['qty_win', 'qty_games']" :sort-desc="[true, true]" multi-sort>
                 <template v-slot:item.name="{ item }">
                   <v-avatar rounded size="36">
                     <img :alt="item.champion" :src="getImg(item.name)">
@@ -217,9 +191,10 @@
             <v-tab-item>
               <champion-field @change="championChanged" class="px-4 pt-2" :solo="false" side="grey darken-1"
                 :map="search" label="Selecione o champion" field="champion_id" :champions="playerChampions" />
-              <v-data-table hide-default-footer :headers="championHeaders" :items="championsWith" :items-per-page="-1" sort-by="qty_win"
-                sort-desc show-group-by group-by="role" class="elevation-0">
-                <template v-slot:item.champion_name="{ item }">
+              <v-data-table hide-default-footer :headers="championHeaders" :items="championsWith" :items-per-page="-1"
+                show-group-by group-by="role" class="elevation-0" multi-sort :sort-by="['qty_win', 'qty_match']"
+                :sort-desc="[true, true]">
+                <template v-slot:[`item.champion_name`]="{ item }">
                   <v-avatar rounded size="36">
                     <img :alt="item.champion" :src="getImg(item.champion_name)">
                   </v-avatar>
@@ -227,17 +202,21 @@
                     {{item.champion_name}}
                   </span>
                 </template>
-                <template v-slot:item.role="{ item }">
+                <template v-slot:[`item.role`]="{ item }">
                   {{item.role}}
+                </template>
+                <template v-slot:[`item.qty_win`]="{ item }">
+                  {{((item.qty_win / item.qty_match) * 100).toFixed(1)}}%
                 </template>
               </v-data-table>
             </v-tab-item>
             <v-tab-item>
               <champion-field @change="championChanged" class="px-4 pt-2" :solo="false" side="grey darken-1"
                 :map="search" label="Selecione o champion" field="champion_id" :champions="playerChampions" />
-              <v-data-table hide-default-footer :headers="championHeaders" :items="championsAgainst" :items-per-page="-1" sort-by="qty_win"
-                sort-desc group-by="role" class="elevation-0">
-                <template v-slot:item.champion_name="{ item }">
+              <v-data-table hide-default-footer :headers="championHeaders" :items="championsAgainst" :items-per-page="-1"
+                show-group-by group-by="role" class="elevation-0" multi-sort :sort-by="['qty_win', 'qty_match']"
+                :sort-desc="[true, true]">
+                <template v-slot:[`item.champion_name`]="{ item }">
                   <v-avatar rounded size="36">
                     <img :alt="item.champion" :src="getImg(item.champion_name)">
                   </v-avatar>
@@ -245,8 +224,11 @@
                     {{item.champion_name}}
                   </span>
                 </template>
-                <template v-slot:item.role="{ item }">
+                <template v-slot:[`item.role`]="{ item }">
                   {{item.role}}
+                </template>
+                <template v-slot:[`item.qty_win`]="{ item }">
+                  {{((item.qty_win / item.qty_match) * 100).toFixed(1)}}%
                 </template>
               </v-data-table>
             </v-tab-item>
