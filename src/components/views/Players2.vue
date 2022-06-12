@@ -112,10 +112,7 @@
               Champion pool
             </v-tab>
             <v-tab>
-              Jogado com {{selectedChampion.champion}}
-            </v-tab>
-            <v-tab>
-              Jogado contra {{selectedChampion.champion}}
+              Matchups
             </v-tab>
           </v-tabs>
         </v-col>
@@ -189,48 +186,58 @@
               </v-data-table>
             </v-tab-item>
             <v-tab-item>
-              <champion-field @change="championChanged" class="px-4 pt-2" :solo="false" side="grey darken-1"
-                :map="search" label="Selecione o champion" field="champion_id" :champions="playerChampions" />
-              <v-data-table hide-default-footer :headers="championHeaders" :items="championsWith" :items-per-page="-1"
-                show-group-by group-by="role" class="elevation-0" multi-sort :sort-by="['qty_win', 'qty_match']"
-                :sort-desc="[true, true]">
-                <template v-slot:[`item.champion_name`]="{ item }">
-                  <v-avatar rounded size="36">
-                    <img :alt="item.champion" :src="getImg(item.champion_name)">
-                  </v-avatar>
-                  <span class="pl-2 subtitle-1">
-                    {{item.champion_name}}
-                  </span>
-                </template>
-                <template v-slot:[`item.role`]="{ item }">
-                  {{item.role}}
-                </template>
-                <template v-slot:[`item.qty_win`]="{ item }">
-                  {{((item.qty_win / item.qty_match) * 100).toFixed(1)}}%
-                </template>
-              </v-data-table>
-            </v-tab-item>
-            <v-tab-item>
-              <champion-field @change="championChanged" class="px-4 pt-2" :solo="false" side="grey darken-1"
-                :map="search" label="Selecione o champion" field="champion_id" :champions="playerChampions" />
-              <v-data-table hide-default-footer :headers="championHeaders" :items="championsAgainst" :items-per-page="-1"
-                show-group-by group-by="role" class="elevation-0" multi-sort :sort-by="['qty_win', 'qty_match']"
-                :sort-desc="[true, true]">
-                <template v-slot:[`item.champion_name`]="{ item }">
-                  <v-avatar rounded size="36">
-                    <img :alt="item.champion" :src="getImg(item.champion_name)">
-                  </v-avatar>
-                  <span class="pl-2 subtitle-1">
-                    {{item.champion_name}}
-                  </span>
-                </template>
-                <template v-slot:[`item.role`]="{ item }">
-                  {{item.role}}
-                </template>
-                <template v-slot:[`item.qty_win`]="{ item }">
-                  {{((item.qty_win / item.qty_match) * 100).toFixed(1)}}%
-                </template>
-              </v-data-table>
+              <v-row>
+                <v-col cols="12">
+                  <champion-field @change="championChanged" class="px-4 pt-2" :solo="false" side="grey darken-1"
+                    :map="search" label="Selecione o champion" field="champion_id" :champions="playerChampions" />
+                </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-title>Jogados com</v-card-title>
+                    <v-data-table hide-default-footer :headers="championHeaders" :items="championsWith"
+                      :items-per-page="-1" show-group-by group-by="role" class="elevation-0" multi-sort
+                      :sort-by="['qty_win', 'qty_match']" :sort-desc="[true, true]">
+                      <template v-slot:[`item.champion_name`]="{ item }">
+                        <v-avatar rounded size="36">
+                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                        </v-avatar>
+                        <span class="pl-2 subtitle-1">
+                          {{item.champion_name}}
+                        </span>
+                      </template>
+                      <template v-slot:[`item.role`]="{ item }">
+                        {{item.role}}
+                      </template>
+                      <template v-slot:[`item.qty_win`]="{ item }">
+                        {{((item.qty_win / item.qty_match) * 100).toFixed(1)}}%
+                      </template>
+                    </v-data-table>
+                  </v-card>
+                </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-title>Jogados contra</v-card-title>
+                    <v-data-table hide-default-footer :headers="championHeaders" :items="championsAgainst"
+                      :items-per-page="-1" show-group-by group-by="role" class="elevation-0" multi-sort
+                      :sort-by="['qty_win', 'qty_match']" :sort-desc="[true, true]">
+                      <template v-slot:[`item.champion_name`]="{ item }">
+                        <v-avatar rounded size="36">
+                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                        </v-avatar>
+                        <span class="pl-2 subtitle-1">
+                          {{item.champion_name}}
+                        </span>
+                      </template>
+                      <template v-slot:[`item.role`]="{ item }">
+                        {{item.role}}
+                      </template>
+                      <template v-slot:[`item.qty_win`]="{ item }">
+                        {{((item.qty_win / item.qty_match) * 100).toFixed(1)}}%
+                      </template>
+                    </v-data-table>
+                  </v-card>
+                </v-col>
+              </v-row>
             </v-tab-item>
           </v-tabs-items>
         </v-col>
@@ -264,7 +271,7 @@
       this.getTournaments();
     },
     data: () => ({
-      tab: null,
+      tab: 1,
       tournaments: [],
       championHeaders: [
         {
