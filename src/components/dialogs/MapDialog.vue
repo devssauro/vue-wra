@@ -1,10 +1,6 @@
 <template>
   <v-card>
-    <v-tabs
-      v-model="tab"
-      background-color="transparent"
-      color="basil"
-      grow>
+    <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
       <v-tab v-for="item in tabs" :key="item">
         {{ item }}
       </v-tab>
@@ -20,6 +16,9 @@
         <draft :map="map" :teams="teamsInfo" />
       </v-tab-item>
       <v-tab-item>
+        <objectives :map="map" :teams="teamsInfo" />
+      </v-tab-item>
+      <v-tab-item>
         <final-stats @save="save" :map="map" :teams="teamsInfo" />
       </v-tab-item>
     </v-tabs-items>
@@ -31,6 +30,7 @@
   import TeamSide from '@/components/mapInfo/TeamSide';
   import PicksBans from '@/components/mapInfo/PicksBans';
   import Draft from '@/components/mapInfo/Draft';
+  import Objectives from '@/components/mapInfo/Objectives';
   import FinalStats from '@/components/mapInfo/FinalStats';
   export default {
     name: 'MapDialog',
@@ -38,6 +38,7 @@
       TeamSide,
       PicksBans,
       Draft,
+      Objectives,
       FinalStats
     },
     props: {
@@ -50,7 +51,7 @@
     data() {
       return {
         tab: null,
-        tabs: ['side', 'Picks & Bans', 'Champion Picks', 'Map stats'],
+        tabs: ['side', 'Picks & Bans', 'Champion Picks', 'Objectives', 'Map stats'],
         teamsInfo: {}, 
         teamsList: [],
         map: {

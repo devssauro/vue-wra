@@ -271,7 +271,7 @@
       this.getTournaments();
     },
     data: () => ({
-      tab: 1,
+      tab: null,
       tournaments: [],
       championHeaders: [
         {
@@ -472,8 +472,6 @@
         axios.get(`v1/view/player/${this.selectedPlayer.id}/${this.selectedChampion.champion_id}/all_matches`, {params: this.search}).then(res => {
           this.championsWith = res.data.champions_with;
           this.championsAgainst = res.data.champions_against;
-          // this.teams_with = res.data.teams_with;
-          // this.teams_against = res.data.teams_against;
         });
       },
       getChampions() {

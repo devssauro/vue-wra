@@ -23,6 +23,9 @@
         <v-col cols="12">
           <v-tabs v-model="tab">
             <v-tab>
+              Geral
+            </v-tab>
+            <v-tab>
               Picks
             </v-tab>
             <v-tab>
@@ -53,6 +56,42 @@
                       hide-default-footer />
                   </v-card>
                 </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-title>Blind Rate</v-card-title>
+                    <v-data-table :headers="prioHeaders" :items="blind" item-key="name" group-by="side" show-group-by
+                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
+                      hide-default-footer />
+                  </v-card>
+                </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-title>Win Rate</v-card-title>
+                    <v-data-table :headers="prioHeaders" :items="blindWR" item-key="name" group-by="side" show-group-by
+                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
+                      hide-default-footer />
+                  </v-card>
+                </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-title>Response Rate</v-card-title>
+                    <v-data-table :headers="prioHeaders" :items="response" item-key="name" group-by="side" show-group-by
+                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
+                      hide-default-footer />
+                  </v-card>
+                </v-col>
+                <v-col cols="6">
+                  <v-card>
+                    <v-card-title>Win Rate</v-card-title>
+                    <v-data-table :headers="prioHeaders" :items="responseWR" item-key="name" group-by="side" show-group-by
+                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
+                      hide-default-footer />
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item>
+              <v-row>
                 <v-col cols="6">
                   <v-data-table :headers="pickHeaders" :items="bluePicks" item-key="name" sort-by="qty_win"
                     group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
@@ -125,8 +164,8 @@
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
                       </v-avatar>
                       <!-- <span class="pl-2 subtitle-1">
-                        {{item.champion_name}}
-                      </span> -->
+                    {{item.champion_name}}
+                  </span> -->
                     </template>
                   </v-data-table>
                 </v-col>
@@ -169,6 +208,10 @@
       redPicks: [],
       resume: [],
       resumeWR: [],
+      blind: [],
+      blindWR: [],
+      response: [],
+      responseWR: [],
       blueBans: [],
       redBans: [],
       presence: {
@@ -356,12 +399,24 @@
         this.selectedPlayer = this.players.filter(c => c.id === val)[0];
         this.getAllInfo();
       },
+      getPrioRotations() {
+        axios.get(`v1/view/prio`, { params: this.search }).then(res => {
+          this.resume = res.data.prio;
+          this.resumeWR = res.data.prio_wr;
+        });
+      },
+      getBlindRotations() {
+        axios.get(`v1/view/blind`, { params: this.search }).then(res => {
+          this.blind = res.data.blind;
+          this.blindWR = res.data.blind_wr;
+          this.response = res.data.response;
+          this.responseWR = res.data.response_wr;
+        });
+      },
       getPickRotations() {
         axios.get(`v1/view/picks`, {params: this.search}).then(res => {
           this.bluePicks = res.data.blue_picks;
           this.redPicks = res.data.red_picks;
-          this.resume = res.data.abstract;
-          this.resumeWR = res.data.wr_rotation;
         });
       },
       getBanRotations() {
@@ -376,6 +431,8 @@
         });
       },
       getRotations() { 
+        this.getPrioRotations();
+        this.getBlindRotations();
         this.getPickRotations();
         this.getBanRotations();
         this.getPresence();
