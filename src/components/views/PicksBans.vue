@@ -367,7 +367,7 @@
       ],
       search: {
         patch: null,
-        t: null,
+        t: 2,
         team: null,
         sort: 'name'
       },

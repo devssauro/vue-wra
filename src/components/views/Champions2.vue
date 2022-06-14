@@ -370,7 +370,7 @@
       search: {
         champion_id: 1,
         role: 'mid',
-        t: null,
+        t: 2,
         patch: null
       },
       selectedChampion: {

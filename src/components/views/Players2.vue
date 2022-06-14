@@ -369,7 +369,7 @@
         champion_id: null,
         role: 'mid',
         patch: null,
-        t: null,
+        t: 2,
       },
       selectedPlayer: {
         id: null,
