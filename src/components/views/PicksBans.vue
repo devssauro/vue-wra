@@ -83,9 +83,9 @@
                 <v-col cols="6">
                   <v-card>
                     <v-card-title>Win Rate</v-card-title>
-                    <v-data-table :headers="prioHeaders" :items="responseWR" item-key="name" group-by="side" show-group-by
-                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
-                      hide-default-footer />
+                    <v-data-table :headers="prioHeaders" :items="responseWR" item-key="name" group-by="side"
+                      show-group-by :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]"
+                      multi-sort hide-default-footer />
                   </v-card>
                 </v-col>
               </v-row>
@@ -156,18 +156,21 @@
             <v-tab-item>
               <v-row>
                 <v-col v-for="role in ['baron', 'jungle', 'mid', 'dragon', 'sup']" :key="role">
-                  <v-data-table dense :headers="presenceHeaders" :items="presence[role]" item-key="name"
-                    hide-default-footer :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort
-                    :items-per-page="-1">
-                    <template v-slot:item.champion_name="{ item }">
-                      <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
-                      </v-avatar>
-                      <!-- <span class="pl-2 subtitle-1">
+                  <v-card>
+                    <v-card-title>{{role}}</v-card-title>
+                    <v-data-table dense :headers="presenceHeaders" :items="presence[role]" item-key="name"
+                      hide-default-footer :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort
+                      :items-per-page="-1">
+                      <template v-slot:item.champion_name="{ item }">
+                        <v-avatar rounded size="36">
+                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                        </v-avatar>
+                        <!-- <span class="pl-2 subtitle-1">
                     {{item.champion_name}}
                   </span> -->
-                    </template>
-                  </v-data-table>
+                      </template>
+                    </v-data-table>
+                  </v-card>
                 </v-col>
               </v-row>
             </v-tab-item>
