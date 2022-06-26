@@ -22,18 +22,10 @@
         </v-col>
         <v-col cols="12">
           <v-tabs v-model="tab">
-            <v-tab>
-              Geral
-            </v-tab>
-            <v-tab>
-              Picks
-            </v-tab>
-            <v-tab>
-              Bans
-            </v-tab>
-            <v-tab>
-              Presença
-            </v-tab>
+            <v-tab>Geral</v-tab>
+            <v-tab>Picks</v-tab>
+            <v-tab>Bans</v-tab>
+            <v-tab>Presença</v-tab>
           </v-tabs>
         </v-col>
         <v-col cols="12">
@@ -103,6 +95,9 @@
                         {{item.champion_name}}
                       </span>
                     </template>
+                    <template v-slot:[`item.qty_win`]="{ item }">
+                      {{((item.qty_win / item.qty_games) * 100).toFixed(1)}}%
+                    </template>
                   </v-data-table>
                 </v-col>
                 <v-col cols="6">
@@ -116,7 +111,9 @@
                         {{item.champion_name}}
                       </span>
                     </template>
-
+                    <template v-slot:[`item.qty_win`]="{ item }">
+                      {{((item.qty_win / item.qty_games) * 100).toFixed(1)}}%
+                    </template>
                   </v-data-table>
                 </v-col>
               </v-row>
@@ -134,7 +131,9 @@
                         {{item.champion_name}}
                       </span>
                     </template>
-
+                    <template v-slot:[`item.qty_win`]="{ item }">
+                      {{((item.qty_win / item.qty_games) * 100).toFixed(1)}}%
+                    </template>
                   </v-data-table>
                 </v-col>
                 <v-col cols="6">
@@ -148,7 +147,9 @@
                         {{item.champion_name}}
                       </span>
                     </template>
-
+                    <template v-slot:[`item.qty_win`]="{ item }">
+                      {{((item.qty_win / item.qty_games) * 100).toFixed(1)}}%
+                    </template>
                   </v-data-table>
                 </v-col>
               </v-row>
@@ -159,7 +160,7 @@
                   <v-card>
                     <v-card-title>{{role}}</v-card-title>
                     <v-data-table dense :headers="presenceHeaders" :items="presence[role]" item-key="name"
-                      hide-default-footer :sort-by="['total_presence', 'qty_win']" :sort-desc="[true, true]" multi-sort
+                      hide-default-footer :sort-by="['qty_picks', 'percent_win']" :sort-desc="[true, true]" multi-sort
                       :items-per-page="-1">
                       <template v-slot:item.champion_name="{ item }">
                         <v-avatar rounded size="36">
@@ -243,7 +244,7 @@
           groupable: false,
         },
         {
-          text: 'Qtd Win',
+          text: '%WR',
           align: 'end',
           sortable: true,
           value: 'qty_win',
@@ -324,7 +325,7 @@
           groupable: false,
         },
         {
-          text: 'Qtd Win',
+          text: '%WR',
           align: 'end',
           sortable: true,
           value: 'qty_win',
@@ -354,17 +355,17 @@
           groupable: false,
         },
         {
-          text: 'Win',
+          text: '%WR',
           align: 'end',
           sortable: true,
-          value: 'qty_win',
+          value: 'percent_win',
           groupable: false,
         },
         {
-          text: 'Presença',
+          text: '%Presença',
           align: 'end',
           sortable: true,
-          value: 'total_presence',
+          value: 'percent_presence',
           groupable: false,
         },
       ],
