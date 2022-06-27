@@ -110,7 +110,8 @@
               <v-row>
                 <v-col cols="6">
                   <v-data-table :headers="pickHeaders" :items="bluePicks" item-key="name" :sort-by="picksBansSortBy"
-                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer @update:sort-by="updatePicksBansSortBy">
+                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer
+                    @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -126,7 +127,8 @@
                 </v-col>
                 <v-col cols="6">
                   <v-data-table :headers="pickHeaders" :items="redPicks" item-key="name" :sort-by="picksBansSortBy"
-                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer @update:sort-by="updatePicksBansSortBy">
+                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer
+                    @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -146,7 +148,8 @@
               <v-row>
                 <v-col cols="6">
                   <v-data-table :headers="banHeaders" :items="blueBans" item-key="name" :sort-by="picksBansSortBy"
-                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer @update:sort-by="updatePicksBansSortBy">
+                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer
+                    @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -162,7 +165,8 @@
                 </v-col>
                 <v-col cols="6">
                   <v-data-table :headers="banHeaders" :items="redBans" item-key="name" :sort-by="picksBansSortBy"
-                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer @update:sort-by="updatePicksBansSortBy">
+                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer
+                    @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -185,14 +189,20 @@
                     <v-card-title>{{role}}</v-card-title>
                     <v-data-table dense :headers="presenceHeaders" :items="presence[role]" item-key="name"
                       hide-default-footer :sort-by="presenceSortBy" :sort-desc="presenceSortDesc" multi-sort
-                      :items-per-page="-1" @update:sort-by="updatePresenceSortBy" @update:sort-desc="updatePresenceSortDesc">
-                      <template v-slot:item.champion_name="{ item }">
+                      :items-per-page="-1" @update:sort-by="updatePresenceSortBy"
+                      @update:sort-desc="updatePresenceSortDesc">
+                      <template v-slot:[`item.champion_name`]="{ item }">
                         <v-avatar rounded size="36">
                           <img :alt="item.champion" :src="getImg(item.champion_name)">
                         </v-avatar>
                         <!-- <span class="pl-2 subtitle-1">
                     {{item.champion_name}}
                   </span> -->
+                      </template>
+                      <template v-slot:[`item.champion_name`]="{ item }">
+                        <v-avatar rounded size="36">
+                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                        </v-avatar>
                       </template>
                     </v-data-table>
                   </v-card>
@@ -281,7 +291,7 @@
           text: '%WR',
           align: 'end',
           sortable: true,
-          value: 'qty_win',
+          value: 'percent_win',
           groupable: false,
         },
       ],
@@ -362,7 +372,7 @@
           text: '%WR',
           align: 'end',
           sortable: true,
-          value: 'qty_win',
+          value: 'percent_win',
           groupable: false,
         },
       ],
