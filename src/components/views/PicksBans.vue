@@ -15,7 +15,7 @@
               </v-col>
               <v-col cols="4">
                 <v-autocomplete @change="getRotations" clearable class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="['3.2a']" />
+                  v-model="search.patch" :items="['3.2a', '3.2b']" />
               </v-col>
             </v-row>
           </v-sheet>
@@ -35,49 +35,73 @@
                 <v-col cols="6">
                   <v-card>
                     <v-card-title>Pick Rate</v-card-title>
-                    <v-data-table :headers="prioHeaders" :items="resume" item-key="name" group-by="side" show-group-by
-                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
-                      hide-default-footer />
+                    <v-data-table :headers="prioHeaders" :items="resume" item-key="name" :group-by="pickRateGroupBy"
+                      show-group-by :items-per-page="-1" :sort-by="pickRateSortBy" :sort-desc="[false, false]"
+                      multi-sort hide-default-footer @update:group-by="updatePickGroupBy">
+                      <template v-slot:[`item.rotation`]="{ item }">
+                        {{rotationLabel[item.side][item.rotation]}}
+                      </template>
+                    </v-data-table>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card>
                     <v-card-title>Win Rate</v-card-title>
-                    <v-data-table :headers="prioHeaders" :items="resumeWR" item-key="name" group-by="side" show-group-by
-                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
-                      hide-default-footer />
+                    <v-data-table :headers="prioHeaders" :items="resumeWR" item-key="name" :group-by="pickRateGroupBy"
+                      show-group-by :items-per-page="-1" :sort-by="pickRateSortBy" :sort-desc="[false, false]"
+                      multi-sort hide-default-footer @update:group-by="updatePickGroupBy">
+                      <template v-slot:[`item.rotation`]="{ item }">
+                        {{rotationLabel[item.side][item.rotation]}}
+                      </template>
+                    </v-data-table>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card>
                     <v-card-title>Blind Rate</v-card-title>
-                    <v-data-table :headers="prioHeaders" :items="blind" item-key="name" group-by="side" show-group-by
-                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
-                      hide-default-footer />
+                    <v-data-table :headers="prioHeaders" :items="blind" item-key="name" :group-by="pickRateGroupBy"
+                      show-group-by :items-per-page="-1" :sort-by="pickRateSortBy" :sort-desc="[false, false]"
+                      multi-sort hide-default-footer @update:group-by="updatePickGroupBy">
+                      <template v-slot:[`item.rotation`]="{ item }">
+                        {{rotationLabel[item.side][item.rotation]}}
+                      </template>
+                    </v-data-table>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card>
                     <v-card-title>Win Rate</v-card-title>
-                    <v-data-table :headers="prioHeaders" :items="blindWR" item-key="name" group-by="side" show-group-by
-                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
-                      hide-default-footer />
+                    <v-data-table :headers="prioHeaders" :items="blindWR" item-key="name" :group-by="pickRateGroupBy"
+                      show-group-by :items-per-page="-1" :sort-by="pickRateSortBy" :sort-desc="[false, false]"
+                      multi-sort hide-default-footer @update:group-by="updatePickGroupBy">
+                      <template v-slot:[`item.rotation`]="{ item }">
+                        {{rotationLabel[item.side][item.rotation]}}
+                      </template>
+                    </v-data-table>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card>
                     <v-card-title>Response Rate</v-card-title>
-                    <v-data-table :headers="prioHeaders" :items="response" item-key="name" group-by="side" show-group-by
-                      :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]" multi-sort
-                      hide-default-footer />
+                    <v-data-table :headers="prioHeaders" :items="response" item-key="name" :group-by="pickRateGroupBy"
+                      show-group-by :items-per-page="-1" :sort-by="pickRateSortBy" :sort-desc="[false, false]"
+                      multi-sort hide-default-footer @update:group-by="updatePickGroupBy">
+                      <template v-slot:[`item.rotation`]="{ item }">
+                        {{rotationLabel[item.side][item.rotation]}}
+                      </template>
+                    </v-data-table>
                   </v-card>
                 </v-col>
                 <v-col cols="6">
                   <v-card>
                     <v-card-title>Win Rate</v-card-title>
-                    <v-data-table :headers="prioHeaders" :items="responseWR" item-key="name" group-by="side"
-                      show-group-by :items-per-page="-1" :sort-by="['side', 'rotation']" :sort-desc="[false, false]"
-                      multi-sort hide-default-footer />
+                    <v-data-table :headers="prioHeaders" :items="responseWR" item-key="name" :group-by="pickRateGroupBy"
+                      show-group-by :items-per-page="-1" :sort-by="pickRateSortBy" :sort-desc="[false, false]"
+                      multi-sort hide-default-footer @update:group-by="updatePickGroupBy">
+                      <template v-slot:[`item.rotation`]="{ item }">
+                        {{rotationLabel[item.side][item.rotation]}}
+                      </template>
+                    </v-data-table>
                   </v-card>
                 </v-col>
               </v-row>
@@ -85,8 +109,8 @@
             <v-tab-item>
               <v-row>
                 <v-col cols="6">
-                  <v-data-table :headers="pickHeaders" :items="bluePicks" item-key="name" sort-by="qty_win"
-                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
+                  <v-data-table :headers="pickHeaders" :items="bluePicks" item-key="name" :sort-by="picksBansSortBy"
+                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -101,8 +125,8 @@
                   </v-data-table>
                 </v-col>
                 <v-col cols="6">
-                  <v-data-table :headers="pickHeaders" :items="redPicks" item-key="name" sort-by="qty_win"
-                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
+                  <v-data-table :headers="pickHeaders" :items="redPicks" item-key="name" :sort-by="picksBansSortBy"
+                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -121,8 +145,8 @@
             <v-tab-item>
               <v-row>
                 <v-col cols="6">
-                  <v-data-table :headers="banHeaders" :items="blueBans" item-key="name" sort-by="qty_win"
-                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
+                  <v-data-table :headers="banHeaders" :items="blueBans" item-key="name" :sort-by="picksBansSortBy"
+                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -137,8 +161,8 @@
                   </v-data-table>
                 </v-col>
                 <v-col cols="6">
-                  <v-data-table :headers="banHeaders" :items="redBans" item-key="name" sort-by="qty_win"
-                    group-by="rotation" show-group-by :items-per-page="-1" sort-desc hide-default-footer>
+                  <v-data-table :headers="banHeaders" :items="redBans" item-key="name" :sort-by="picksBansSortBy"
+                    :group-by="picksBansGroupBy" show-group-by :items-per-page="-1" sort-desc hide-default-footer @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
                         <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -160,8 +184,8 @@
                   <v-card>
                     <v-card-title>{{role}}</v-card-title>
                     <v-data-table dense :headers="presenceHeaders" :items="presence[role]" item-key="name"
-                      hide-default-footer :sort-by="['qty_picks', 'percent_win']" :sort-desc="[true, true]" multi-sort
-                      :items-per-page="-1">
+                      hide-default-footer :sort-by="presenceSortBy" :sort-desc="presenceSortDesc" multi-sort
+                      :items-per-page="-1" @update:sort-by="updatePresenceSortBy" @update:sort-desc="updatePresenceSortDesc">
                       <template v-slot:item.champion_name="{ item }">
                         <v-avatar rounded size="36">
                           <img :alt="item.champion" :src="getImg(item.champion_name)">
@@ -207,6 +231,12 @@
     },
     data: () => ({
       tab: null,
+      pickRateSortBy: ['side', 'rotation'],
+      pickRateGroupBy: 'side',
+      picksBansSortBy: 'qty_win',
+      picksBansGroupBy: 'rotation',
+      presenceSortBy: ['qty_picks', 'percent_win'],
+      presenceSortDesc: [true, true],
       tournaments: [],
       bluePicks: [],
       redPicks: [],
@@ -218,6 +248,10 @@
       responseWR: [],
       blueBans: [],
       redBans: [],
+      rotationLabel: {
+        blue: { 1: 'B1', 2: 'B2/B3', 3: 'B4/B5', 4: 'B6/B7' },
+        red: {1: 'R1/R2', 2: 'R3', 3: 'R4', 4: 'R5'}
+      },
       presence: {
         baron: [], jungle: [], mid: [], dragon: [], sup: []
       },
@@ -387,6 +421,18 @@
       ],
     }),
     methods: {
+      updatePickGroupBy(val) {
+        this.pickRateGroupBy = val;
+      },
+      updatePicksBansSortBy(val) {
+        this.picksBansSortBy = val;
+      },
+      updatePresenceSortBy(val) {
+        this.presenceSortBy = val;
+      },
+      updatePresenceSortDesc(val) {
+        this.presenceSortDesc = val;
+      },
       getTournaments() {
         axios.get('v1/tournament').then(res => {
           this.tournaments = res.data.tournaments.map(m => {
