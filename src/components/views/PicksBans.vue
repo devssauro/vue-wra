@@ -15,7 +15,7 @@
               </v-col>
               <v-col cols="4">
                 <v-autocomplete @change="getRotations" clearable class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="['3.2a', '3.2b']" />
+                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c']" />
               </v-col>
             </v-row>
           </v-sheet>
@@ -415,7 +415,7 @@
       ],
       search: {
         patch: null,
-        t: 2,
+        t: 7,
         team: null,
         sort: 'name'
       },

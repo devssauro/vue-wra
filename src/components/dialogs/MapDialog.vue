@@ -67,7 +67,7 @@
           red_mid_player: null,
           red_dragon_player: null,
           red_sup_player: null,
-          patch: '3.2b',
+          patch: '3.2c',
         },
       }
     },

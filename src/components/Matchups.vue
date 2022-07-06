@@ -154,7 +154,7 @@
             // m.datetime = moment(`${m.datetime}`).format('DD/MM/YYYY HH:mm');
             return m;
           });
-          this.selectedTournaments = 2;
+          this.selectedTournaments = 7;
           this.getMatchups(this.selectedTournaments);
         });
       },
