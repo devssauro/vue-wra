@@ -8,7 +8,7 @@ Vue.config.productionTip = false;
 
 window.axios = axios;
 // window.axios.defaults.baseURL = process.env.VUE_APP_API_URL;
-window.axios.defaults.baseURL = window.location.host.indexOf('localhost') > -1 ? `http://localhost:5010` : `https://wrabf.dinossauro.dev`;
+window.axios.defaults.baseURL = window.location.host.indexOf('localhost') > -1 ? `http://localhost:5010` : `https://wrflask.dinossauro.dev/`;
 // window.axios.defaults.baseURL = `https://wrabf.dinossauro.dev`;
 
 

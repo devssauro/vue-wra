@@ -5,6 +5,7 @@ import MatchupsView from '@/views/MatchupsView.vue'
 import ChampionsView from '@/views/ChampionsView.vue'
 import PlayersView from '@/views/PlayersView.vue'
 import PicksBansView from '@/views/PicksBansView.vue'
+import GeneralStatsView from '@/views/GeneralStatsView.vue'
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/view/picks_bans',
     name: 'picksBansView',
     component: PicksBansView
+  },
+  {
+    path: '/view/stats',
+    name: 'generalStatsView',
+    component: GeneralStatsView
   },
 ]
 

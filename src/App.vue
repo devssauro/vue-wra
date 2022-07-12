@@ -44,6 +44,7 @@ export default {
       { title: 'Champion', to: '/view/champion' },
       { title: 'Player', to: '/view/player' },
       { title: 'Picks & Bans', to: '/view/picks_bans' },
+      { title: 'Stats Geral', to: '/view/stats' },
     ],
   }),
   methods: {
