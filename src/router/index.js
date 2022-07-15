@@ -6,6 +6,7 @@ import ChampionsView from '@/views/ChampionsView.vue'
 import PlayersView from '@/views/PlayersView.vue'
 import PicksBansView from '@/views/PicksBansView.vue'
 import GeneralStatsView from '@/views/GeneralStatsView.vue'
+import DownloadView from '@/views/DownloadView.vue'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/view/stats',
     name: 'generalStatsView',
     component: GeneralStatsView
+  },
+  {
+    path: '/download',
+    name: 'downloadView',
+    component: DownloadView
   },
 ]
 

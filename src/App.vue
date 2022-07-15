@@ -39,6 +39,7 @@ export default {
     links: [
       { title: 'Matchups', to: '/', toShow: true},
       { title: 'Cadastros', to: '/cadastros', toShow: window.location.host.indexOf('localhost') > -1},
+      { title: 'Download', to: '/download', toShow: true },
     ],
     items: [
       { title: 'Champion', to: '/view/champion' },

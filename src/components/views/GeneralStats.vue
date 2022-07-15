@@ -33,7 +33,7 @@
               <v-row>
                 <v-col>
                   <v-card>
-                    <v-data-table :headers="teamHeaders" :items="teamsStats" item-key="name" :items-per-page="-1"
+                    <v-data-table dense :headers="teamHeaders" :items="teamsStats" item-key="name" :items-per-page="-1"
                       :sort-by="pickRateSortBy" :sort-desc="[false, false]" multi-sort hide-default-footer
                       @update:group-by="updatePickGroupBy">
                       <template v-slot:[`item.agt`]="{ item }">
@@ -76,9 +76,9 @@
               <v-row>
                 <v-col>
                   <v-card>
-                    <v-data-table :headers="playerHeaders" :items="playersStats" item-key="name" :items-per-page="-1"
-                      :sort-by="pickRateSortBy" :sort-desc="[false, false]" multi-sort hide-default-footer
-                      @update:group-by="updatePickGroupBy">
+                    <v-data-table dense :headers="playerHeaders" :items="playersStats" item-key="name" show-group-by
+                      :items-per-page="-1" :sort-by="pickRateSortBy" :sort-desc="[false, false]" multi-sort
+                      hide-default-footer @update:group-by="updatePickGroupBy" :group-by="playerStatsGroupBy">
                       <template v-slot:[`item.agt`]="{ item }">
                         {{item.agt}}
                         <span class="green--text" v-if="item.diff_agt.indexOf('-') > -1">
@@ -119,29 +119,29 @@
               <v-row>
                 <v-col>
                   <v-card>
-                    <v-data-table :headers="championHeaders" :items="championsStats" item-key="name" :items-per-page="-1"
-                      :sort-by="pickRateSortBy" :sort-desc="[false, false]" multi-sort hide-default-footer
-                      @update:group-by="updatePickGroupBy">
+                    <v-data-table dense :headers="championHeaders" :items="championsStats" item-key="name"
+                      :items-per-page="-1" :sort-by="pickRateSortBy" :sort-desc="[false, false]" multi-sort
+                      hide-default-footer @update:group-by="updatePickGroupBy">
                       <template v-slot:[`item.champion_name`]="{ item }">
-                        <v-avatar rounded size="36" v-if="item.champion_name !== underfined">
+                        <v-avatar rounded size="32" v-if="item.champion_name !== underfined">
                           <img :alt="item.champion" :src="getImg(item.champion_name)">
                         </v-avatar>
-                        <span class="pl-2 mr-3 subtitle-2">
+                        <span class="pl-2 mr-2 subtitle-1">
                           {{item.champion_name}}
                         </span>
                       </template>
                       <template v-slot:[`item.agt`]="{ item }">
                         {{item.agt}}
-                        <span class="green--text" v-if="item.diff_agt.indexOf('-') > -1">
+                        <span class="green--text mr-1" v-if="item.diff_agt.indexOf('-') > -1">
                           ({{item.diff_agt}})
                         </span>
-                        <span class="red--text" v-else>
+                        <span class="red--text mr-1" v-else>
                           ({{item.diff_agt}})
                         </span>
                       </template>
                       <template v-slot:[`item.agt_win`]="{ item }">
                         {{item.agt_win}}
-                        <span v-if="item.agt_win !== '-'">
+                        <span v-if="item.agt_win !== '-'" class="mr-1">
                           <span class="green--text" v-if="item.diff_agt_win.indexOf('-') > -1">
                             ({{item.diff_agt_win}})
                           </span>
@@ -152,7 +152,7 @@
                       </template>
                       <template v-slot:[`item.agt_loss`]="{ item }">
                         {{item.agt_loss}}
-                        <span v-if="item.agt_loss !== '-'">
+                        <span v-if="item.agt_loss !== '-'" class="mr-1">
                           <span class="green--text" v-if="item.diff_agt_loss.indexOf('-') == -1">
                             ({{item.diff_agt_loss}})
                           </span>
@@ -198,6 +198,7 @@
     },
     data: () => ({
       tab: null,
+      playerStatsGroupBy: 'role',
       pickRateSortBy: [],
       pickRateGroupBy: 'side',
       picksBansSortBy: 'qty_win',
@@ -345,13 +346,6 @@
           groupable: true,
         },
         {
-          text: 'AVG dmg',
-          align: 'end',
-          sortable: true,
-          value: 'avg_kda',
-          groupable: true,
-        },
-        {
           text: '%Presença',
           align: 'end',
           sortable: true,
@@ -435,126 +429,126 @@
           align: 'start',
           sortable: true,
           value: 'role',
-          groupable: false,
+          groupable: true,
         },
         {
           text: 'Player',
           align: 'start',
           sortable: true,
           value: 'nickname',
-          groupable: false,
+          groupable: true,
         },
         {
           text: 'AVG Kills',
           align: 'end',
           sortable: true,
           value: 'avg_kills',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'AVG Deaths',
           align: 'end',
           sortable: true,
           value: 'avg_deaths',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'AVG Assists',
           align: 'end',
           sortable: true,
           value: 'avg_assists',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'AVG KDA',
           align: 'end',
           sortable: true,
           value: 'avg_kda',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'DDPM',
           align: 'end',
           sortable: true,
           value: 'ddpm',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'GPM',
           align: 'end',
           sortable: true,
           value: 'gpm',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'DDPG',
           align: 'end',
           sortable: true,
           value: 'ddpg',
-          groupable: true,
+          groupable: false,
         },
         {
-          text: 'AVG dmg',
+          text: 'Qtd Games',
           align: 'end',
           sortable: true,
-          value: 'avg_kda',
-          groupable: true,
+          value: 'qty_picks',
+          groupable: false,
         },
         {
           text: '%WR',
           align: 'end',
           sortable: true,
           value: 'wr',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'Blue games',
           align: 'end',
           sortable: true,
           value: 'qty_blue_games',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'Red games',
           align: 'end',
           sortable: true,
           value: 'qty_red_games',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'Blue %WR',
           align: 'end',
           sortable: true,
           value: 'wr_blue',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'Red %WR',
           align: 'end',
           sortable: true,
           value: 'wr_red',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'AGT',
           align: 'start',
           sortable: true,
           value: 'agt',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'AGT Win',
           align: 'start',
           sortable: true,
           value: 'agt_win',
-          groupable: true,
+          groupable: false,
         },
         {
           text: 'AGT Loss',
           align: 'start',
           sortable: true,
           value: 'agt_loss',
-          groupable: true,
+          groupable: false,
         },
       ],
       search: {
