@@ -15,7 +15,7 @@
               </v-col>
               <v-col cols="3">
                 <v-autocomplete clearable @change="getPlayersFromRole" class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c']" />
+                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c', '3.3']" />
               </v-col>
               <v-col cols="3">
                 <v-autocomplete clearable @change="getPlayersFromRole" class="px-4 mb-n5" outlined label="Side"
@@ -373,7 +373,7 @@
       },
       selectedPlayer: {
         id: null,
-        nickname: '',
+        nickname: ''
       },
       selectedChampion: {
         id: null,

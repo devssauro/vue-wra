@@ -15,7 +15,7 @@
               </v-col>
               <v-col cols="4">
                 <v-autocomplete @change="getStats" clearable class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c']" />
+                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c', '3.3', '3.3']" />
               </v-col>
             </v-row>
           </v-sheet>
