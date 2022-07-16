@@ -4,26 +4,28 @@
       <v-row>
         <v-col cols="12">
           <v-sheet class="pt-6" rounded="lg">
+            <!-- {{search}} -->
+            <!-- {{availableRoles}} -->
             <v-row>
-              <v-col cols="3">
-                <v-select @change="roleChanged" class="px-4 mb-n5" outlined label="Role" v-model="search.role"
-                  :items="roles" item-text="title" item-value="tag" />
-              </v-col>
-              <v-col cols="3">
-                <v-autocomplete clearable @change="getChampionsFromRole" class="px-4 mb-n5" outlined label="Campeonato"
+              <v-col cols="4">
+                <v-autocomplete clearable @change="tournamentChanged" class="px-4 mb-n5" outlined label="Campeonato"
                   v-model="search.t" :items="tournaments" item-text="name" item-value="id" />
               </v-col>
-              <v-col cols="3">
-                <v-autocomplete clearable @change="getChampionsFromRole" class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c']" />
+              <v-col cols="4">
+                <v-autocomplete clearable @change="getChampions" class="px-4 mb-n5" outlined label="Patch"
+                  v-model="search.patch" :items="patches" />
               </v-col>
-              <v-col cols="3">
-                <v-autocomplete clearable @change="getChampionsFromRole" class="px-4 mb-n5" outlined label="Side"
+              <v-col cols="4">
+                <v-autocomplete clearable @change="getChampions" class="px-4 mb-n5" outlined label="Side"
                   v-model="search.side" :items="['red', 'blue']" />
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <champion-field @change="championChanged" class="px-4" :solo="false" side="grey darken-1" :map="search"
                   label="Champion" field="champion_id" :champions="champions" />
+              </v-col>
+              <v-col cols="6">
+                <v-autocomplete clearable multiple @change="getAllInfo" class="px-4 mb-n5" outlined label="Role"
+                  v-model="search.role" :items="availableRoles" item-text="title" item-value="tag" />
               </v-col>
             </v-row>
           </v-sheet>
@@ -169,10 +171,10 @@
               </v-row>
             </v-tab-item>
             <v-tab-item>
-              <v-data-table hide-default-footer :headers="playerHeaders" :items="players" :items-per-page="-1"
+              <v-data-table group-by="role" show-group-by hide-default-footer :headers="playerHeaders" :items="players" :items-per-page="-1"
                 item-key="nickname" :sort-by="['qty_win', 'qty_games']" :sort-desc="[true, true]" multi-sort
                 class="elevation-0">
-                <template v-slot:item.gpm="{ item }">
+                <template v-slot:[`item.gpm`]="{ item }">
                   {{item.gpm}}
                   <span class="green--text" v-if="item.gpm > avg_stats.gpm">
                     (+{{(item.gpm-avg_stats.gpm).toFixed(2)}})
@@ -181,7 +183,7 @@
                     ({{(item.gpm-avg_stats.gpm).toFixed(2)}})
                   </span>
                 </template>
-                <template v-slot:item.ddpm="{ item }">
+                <template v-slot:[`item.ddpm`]="{ item }">
                   {{item.ddpm}}
                   <span class="green--text" v-if="item.ddpm > avg_stats.ddpm">
                     (+{{(item.ddpm-avg_stats.ddpm).toFixed(2)}})
@@ -190,7 +192,7 @@
                     ({{(item.ddpm-avg_stats.ddpm).toFixed(2)}})
                   </span>
                 </template>
-                <template v-slot:item.avg_kills="{ item }">
+                <template v-slot:[`item.avg_kills`]="{ item }">
                   {{item.avg_kills}}
                   <span class="green--text" v-if="item.avg_kills > avg_stats.avg_kills">
                     (+{{(item.avg_kills-avg_stats.avg_kills).toFixed(2)}})
@@ -199,7 +201,7 @@
                     ({{(item.avg_kills-avg_stats.avg_kills).toFixed(2)}})
                   </span>
                 </template>
-                <template v-slot:item.avg_deaths="{ item }">
+                <template v-slot:i[`tem.avg_deaths`]="{ item }">
                   {{item.avg_deaths}}
                   <span class="red--text" v-if="item.avg_deaths > avg_stats.avg_deaths">
                     (+{{(item.avg_deaths-avg_stats.avg_deaths).toFixed(2)}})
@@ -208,7 +210,7 @@
                     ({{(item.avg_deaths-avg_stats.avg_deaths).toFixed(2)}})
                   </span>
                 </template>
-                <template v-slot:item.avg_assists="{ item }">
+                <template v-slot:[`item.avg_assists`]="{ item }">
                   {{item.avg_assists}}
                   <span class="green--text" v-if="item.avg_assists > avg_stats.avg_assists">
                     (+{{(item.avg_assists-avg_stats.avg_assists).toFixed(2)}})
@@ -217,13 +219,53 @@
                     ({{(item.avg_assists-avg_stats.avg_assists).toFixed(2)}})
                   </span>
                 </template>
-                <template v-slot:item.ddpg="{ item }">
+                <template v-slot:[`item.ddpg`]="{ item }">
                   {{item.ddpg}}
                   <span class="green--text" v-if="item.ddpg > avg_stats.ddpg">
                     (+{{(item.ddpg-avg_stats.ddpg).toFixed(2)}})
                   </span>
                   <span class="red--text" v-else>
                     ({{(item.ddpg-avg_stats.ddpg).toFixed(2)}})
+                  </span>
+                </template>
+                <template v-slot:[`item.avg_kda`]="{ item }">
+                  {{item.avg_kda}}
+                  <span class="green--text" v-if="item.avg_kda > avg_stats.avg_kda">
+                    (+{{(item.avg_kda-avg_stats.avg_kda).toFixed(2)}})
+                  </span>
+                  <span class="red--text" v-else>
+                    ({{(item.avg_kda-avg_stats.avg_kda).toFixed(2)}})
+                  </span>
+                </template>
+                <template v-slot:[`item.agt`]="{ item }">
+                  {{item.agt}}
+                  <span class="green--text" v-if="item.diff_agt.indexOf('-') > -1">
+                    ({{item.diff_agt}})
+                  </span>
+                  <span class="red--text" v-else>
+                    ({{item.diff_agt}})
+                  </span>
+                </template>
+                <template v-slot:[`item.agt_win`]="{ item }">
+                  {{item.agt_win}}
+                  <span v-if="item.agt_win !== '-'">
+                    <span class="green--text" v-if="item.diff_agt_win.indexOf('-') > -1">
+                      ({{item.diff_agt_win}})
+                    </span>
+                    <span class="red--text" v-else>
+                      ({{item.diff_agt_win}})
+                    </span>
+                  </span>
+                </template>
+                <template v-slot:[`item.agt_loss`]="{ item }">
+                  {{item.agt_loss}}
+                  <span v-if="item.agt_loss !== '-'">
+                    <span class="green--text" v-if="item.diff_agt_loss.indexOf('-') == -1">
+                      ({{item.diff_agt_loss}})
+                    </span>
+                    <span class="red--text" v-else>
+                      ({{item.diff_agt_loss}})
+                    </span>
                   </span>
                 </template>
               </v-data-table>
@@ -252,8 +294,10 @@
       ChampionField
     },
     created() {
-      this.getChampionsFromRole('mid');
+      // this.getChampionsFromRole('mid');
+      this.getChampions();
       this.getTournaments();
+      this.getPatches();
     },
     data: () => ({
       tab: null,
@@ -294,10 +338,11 @@
       ],
       playerHeaders: [
         {
-          text: 'Team',
+          text: 'Role',
           align: 'start',
           sortable: true,
-          value: 'team',
+          value: 'role',
+          groupable: true,
         },
         {
           text: 'Player',
@@ -349,6 +394,34 @@
           groupable: false,
         },
         {
+          text: 'AVG KDA',
+          align: 'end',
+          sortable: true,
+          value: 'avg_kda',
+          groupable: false,
+        },
+        {
+          text: 'AGT',
+          align: 'start',
+          sortable: true,
+          value: 'agt',
+          groupable: false,
+        },
+        {
+          text: 'AGT Win',
+          align: 'start',
+          sortable: true,
+          value: 'agt_win',
+          groupable: false,
+        },
+        {
+          text: 'AGT Loss',
+          align: 'start',
+          sortable: true,
+          value: 'agt_loss',
+          groupable: false,
+        },
+        {
           text: 'Games',
           align: 'end',
           sortable: true,
@@ -364,14 +437,16 @@
       ],
       championsWith: [],
       championsAgainst: [],
+      patches: [],
       players: [],
       avg_stats: {},
       tournaments: [],
       search: {
         champion_id: 1,
-        role: 'mid',
+        // role: ['mid'],
         t: 7,
-        patch: null
+        patch: null,
+        side: null
       },
       selectedChampion: {
         id: null,
@@ -420,27 +495,57 @@
         {title: 'ADC', tag: 'dragon'},
         {title: 'SUP', tag: 'sup'},
       ],
+      availableRoles: []
     }),
     computed: {
-      
+      axiosParams() {
+        const params = new URLSearchParams();
+        for (let role in this.search.role) {
+          if (this.search.role[role] !== null)
+            params.append('role', this.search.role[role]);
+        }
+        if (this.search.t !== null)
+          params.append('t', this.search.t);
+        if (this.search.patch !== null)
+          params.append('patch', this.search.patch);
+        if (this.search.side !== null)
+          params.append('side', this.search.side);
+        console.log(params.toString());
+        return params;
+      }
     },
     methods: {
+      championRoles() {
+      },
       getTournaments() {
         axios.get('v1/tournament').then(res => {
-          this.tournaments = res.data.tournaments.map(m => {
-            return m;
-          });
+          this.tournaments = res.data.tournaments;
         });
       },
       roleChanged() {
-        this.getChampionsFromRole();
+        // this.getChampionsFromRole();
       },
       championChanged() { 
         this.selectedChampion = this.champions.filter(c => c.id === this.search.champion_id)[0];
+        this.availableRoles = this.roles.filter(r => this.selectedChampion.roles.indexOf(r.tag) > -1);
+        // this.search.role = this.selectedChampion.roles;
         this.getAllInfo();
       },
+      getChampions() {
+        axios.get(`v1/view/champion`, { params: this.search }).then(res => {
+          this.champions = res.data.champions;
+          const _champions = this.champions.filter(c => c.id === this.selectedChampion.id);
+          if (this.selectedChampion.id === null || _champions.length === 0)
+            this.selectedChampion = this.champions[0];
+          this.search.champion_id = this.selectedChampion.id;
+          this.availableRoles = this.roles.filter(r => this.selectedChampion.roles.indexOf(r.tag) > -1);
+          this.getAllInfo();
+          // this.selectedChampion = this.champions.filter(c => c.id === this.search.champion_id)[0];
+          // this.availableRoles = this.roles.filter(r => r.tag in this.selectedChampion.roles);
+        });
+      },
       getChampionsFromRole() {
-        axios.get(`v1/view/champion/role/${this.search.role}`, {params: this.search}).then(res => {
+        axios.get(`v1/view/champion/role/${this.search.role}`, {params: this.axiosParams}).then(res => {
           this.champions = res.data.champions;
           const _champions = this.champions.filter(c => c.id === this.selectedChampion.id);
           if (this.selectedChampion.id === null || _champions.length === 0)
@@ -450,30 +555,42 @@
         });
       },
       getSideStats() {
-        axios.get(`v1/view/champion/${this.selectedChampion.id}/side`, {params: this.search}).then(res => {
+        axios.get(`v1/view/champion/${this.selectedChampion.id}/side`, {params: this.axiosParams}).then(res => {
           this.sideStats = res.data;
         });
       },
       getTop3() {
-        axios.get(`v1/view/champion/${this.selectedChampion.id}/top3`, {params: this.search}).then(res => {
+        axios.get(`v1/view/champion/${this.selectedChampion.id}/top3`, {params: this.axiosParams}).then(res => {
           this.teams_with = res.data.teams_with;
           this.teams_against = res.data.teams_against;
         });
       },
       getAllMatches() {
-        axios.get(`v1/view/champion/${this.selectedChampion.id}/all_matches`, {params: this.search}).then(res => {
+        axios.get(`v1/view/champion/${this.selectedChampion.id}/all_matches`, {params: this.axiosParams}).then(res => {
           this.championsWith = res.data.champions_with;
           this.championsAgainst = res.data.champions_against;
         });
       },
       getPlayers() {
-        axios.get(`v1/view/champion/${this.selectedChampion.id}/players`, {params: this.search}).then(res => {
+        axios.get(`v1/view/champion/${this.selectedChampion.id}/players`, {params: this.axiosParams}).then(res => {
           this.players = res.data.players;
           this.avg_stats = res.data.general;
         });
       },
       getImg(champion) {
         return require(`@/assets/${champion}.png`);
+      },
+      getPatches() {
+        axios.get(`v1/patch`, { params: this.axiosParams }).then(res => {
+          const _patch = res.data.patches.filter(p => p === this.search.patch);
+          if (_patch.length === 0)
+            this.search.patch = null;
+          this.patches = res.data.patches;
+        });
+      },
+      tournamentChanged() {
+        this.getPatches();
+        this.getChampions();
       },
       getAllInfo() {
         this.getSideStats();

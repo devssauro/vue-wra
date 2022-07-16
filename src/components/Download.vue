@@ -15,7 +15,7 @@
               </v-col>
               <v-col cols="4">
                 <v-autocomplete multiple clearable class="px-4 mb-n5" outlined label="Patch" v-model="search.patch"
-                  :items="['3.2a', '3.2b', '3.2c']" />
+                  :items="['3.2a', '3.2b', '3.2c', '3.3']" />
               </v-col>
             </v-row>
           </v-sheet>
@@ -174,11 +174,11 @@ export default {
     ],
     pickRotation: [
       {
-        'title': 'English (B1,B1/B2... R1/R2, R3)',
+        'title': 'English (B1,B2/B3... R1/R2, R3)',
         'value': 'explicit_eng'
       },
       {
-        'title': 'Português (A1,A1/A2... V1/V2, V3)',
+        'title': 'Português (A1,A2/A3... V1/V2, V3)',
         'value': 'explicit_pt'
       },
       {
