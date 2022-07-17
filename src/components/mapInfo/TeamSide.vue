@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-row>
       <!-- {{map}} -->
       <v-col cols="4" offset="2">

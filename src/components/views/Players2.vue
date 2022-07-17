@@ -48,6 +48,19 @@
                           </p>
                         </v-col>
                       </v-row>
+                      <v-row>
+                        <v-col cols="3" />
+                        <v-col cols="4" class="mb-n6 ml-n3">
+                          <span>
+                            {{avg_stats.ddpm}} DDPM
+                          </span>
+                        </v-col>
+                        <v-col cols="4" class="mb-n6">
+                          <span>
+                            {{avg_stats.gpm}} GPM
+                          </span>
+                        </v-col>
+                      </v-row>
                     </v-container>
                   </v-card-title>
                 </v-card>
@@ -90,13 +103,13 @@
                           <span class="display-1">
                             {{sideStats.percent_total_blue_wins.toFixed(1)}}%
                           </span><br />
-                          <span>Vitórias blue side</span>
+                          <span>Vitórias blue</span>
                         </v-col>
                         <v-col cols="6" class="red--text">
                           <span class="display-1">
-                            {{ sideStats.percent_total_red_wins.toFixed(1)}}%
+                            {{sideStats.percent_total_red_wins.toFixed(1)}}%
                           </span><br />
-                          <span>Vitórias red side</span>
+                          <span>Vitórias red</span>
                         </v-col>
                       </v-row>
                     </v-col>
