@@ -45,22 +45,17 @@
                           <p class="display-1">
                             {{selectedChampion.name}}
                           </p>
-                          <p class="headline mb-0">
+                          <p class="headline">
                             {{avg_stats.avg_kills}} / {{avg_stats.avg_deaths}} / {{avg_stats.avg_assists}}
                           </p>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="3" />
-                        <v-col cols="4" class="mb-n6 ml-n3">
-                          <span>
-                            {{avg_stats.ddpm}} DDPM
-                          </span>
-                        </v-col>
-                        <v-col cols="4" class="mb-n6">
-                          <span>
-                            {{avg_stats.gpm}} GPM
-                          </span>
+                          <p class="mb-0">
+                            <span>
+                              {{avg_stats.ddpm}} DDPM
+                            </span>
+                            <span class="pl-4">
+                              {{avg_stats.gpm}} GPM
+                            </span>
+                          </p>
                         </v-col>
                       </v-row>
                     </v-container>
