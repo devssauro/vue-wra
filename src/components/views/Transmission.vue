@@ -2,9 +2,9 @@
   <v-main fill-height>
     <v-container fluid>
       <v-row>
-        <v-col :style="{ 'visibility': isLoading ? 'hidden' : 'visible'}">
+        <v-col>
           <v-sheet rounded="lg" class="pa-2">
-            <v-row>
+            <v-row :style="{ 'visibility' : isLoading ? 'hidden' : 'visible' }">
               <v-col cols="12" sm="12" md="5">
                 <v-card class="" outlined v-if="search.champion_id !== null && search.champion_id !== undefined">
                   <v-card-title>
@@ -88,35 +88,35 @@
                   </v-row>
                 </v-card>
               </v-col>
-            </v-row>
-          </v-sheet>
-        </v-col>
-        <v-col cols="12">
-          <v-sheet class="pt-6" rounded="lg">
-            <v-row>
-              <v-col cols="4">
-                <v-autocomplete clearable @change="tournamentChanged" class="px-4 mb-n5" outlined label="Campeonato"
-                  v-model="search.t" :items="tournaments" item-text="name" item-value="id" />
-              </v-col>
-              <v-col cols="4">
-                <v-autocomplete clearable @change="getChampions" class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="patches" />
-              </v-col>
-              <v-col cols="4">
-                <v-autocomplete clearable @change="getChampions" class="px-4 mb-n5" outlined label="Side"
-                  v-model="search.side" :items="['red', 'blue']" />
-              </v-col>
-              <v-col cols="6">
-                <champion-field @change="championChanged" class="px-4" :solo="false" side="grey darken-1" :map="search"
-                  label="Champion" field="champion_id" :champions="champions" />
-              </v-col>
-              <v-col cols="6">
-                <v-autocomplete clearable multiple @change="getAllInfo" class="px-4 mb-n5" outlined label="Role"
-                  v-model="search.role" :items="availableRoles" item-text="title" item-value="tag" />
-              </v-col>
-            </v-row>
-          </v-sheet>
-        </v-col>
+      </v-row>
+      </v-sheet>
+      </v-col>
+      <v-col cols="12">
+        <v-sheet class="pt-6" rounded="lg">
+          <v-row>
+            <v-col cols="4">
+              <v-autocomplete clearable @change="tournamentChanged" class="px-4 mb-n5" outlined label="Campeonato"
+                v-model="search.t" :items="tournaments" item-text="name" item-value="id" />
+            </v-col>
+            <v-col cols="4">
+              <v-autocomplete clearable @change="getChampions" class="px-4 mb-n5" outlined label="Patch"
+                v-model="search.patch" :items="patches" />
+            </v-col>
+            <v-col cols="4">
+              <v-autocomplete clearable @change="getChampions" class="px-4 mb-n5" outlined label="Side"
+                v-model="search.side" :items="['red', 'blue']" />
+            </v-col>
+            <v-col cols="6">
+              <champion-field @change="championChanged" class="px-4" :solo="false" side="grey darken-1" :map="search"
+                label="Champion" field="champion_id" :champions="champions" />
+            </v-col>
+            <v-col cols="6">
+              <v-autocomplete clearable multiple @change="getAllInfo" class="px-4 mb-n5" outlined label="Role"
+                v-model="search.role" :items="availableRoles" item-text="title" item-value="tag" />
+            </v-col>
+          </v-row>
+        </v-sheet>
+      </v-col>
       </v-row>
     </v-container>
     <v-snackbar v-model="snackbar">
