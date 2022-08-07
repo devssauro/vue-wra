@@ -5,7 +5,7 @@
         <v-col :style="{ 'visibility': isLoading ? 'hidden' : 'visible'}">
           <v-sheet rounded="lg" class="pa-2">
             <v-row>
-              <v-col cols="12" sm="12" md="6">
+              <v-col cols="12" sm="12" md="5">
                 <v-card class="" outlined v-if="search.champion_id !== null && search.champion_id !== undefined">
                   <v-card-title>
                     <v-container>
@@ -26,8 +26,8 @@
                             </span>
                             <span class="pl-2">
                               {{selectedChampionStats.qty_bans}} BANS
-                            </span>
-                            <span class="pl-2">
+                            </span><br />
+                            <span>
                               {{selectedChampionStats.percent_presence}}% PRESENÇA
                             </span>
                           </p>
@@ -37,7 +37,7 @@
                   </v-card-title>
                 </v-card>
               </v-col>
-              <v-col cols="12" sm="12" md="6">
+              <v-col cols="12" sm="12" md="7">
                 <v-card class="pa-2 py-3" outlined
                   v-if="search.champion_id !== null && search.champion_id !== undefined">
                   <v-row>
