@@ -10,7 +10,7 @@
                   <v-card-title>
                     <v-container>
                       <v-row align="start">
-                        <v-avatar size="100" rounded>
+                        <v-avatar size="100" rounded class="mt-8">
                           <img :alt="selectedChampion.name" :src="getImg(selectedChampion.name)">
                         </v-avatar>
                         <v-col cols="8" class="py-0">
