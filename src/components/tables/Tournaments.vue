@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="tournaments" :items-per-page="10" sort-by="name" class="elevation-0">
+  <v-data-table :loading="loading" :headers="headers" :items="tournaments" :items-per-page="10" sort-by="name" class="elevation-0">
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Campeonatos</v-toolbar-title>
@@ -68,6 +68,11 @@
                           <template v-for="(item, index) in selectedTournament.lineups">
                             <v-list-item :key="index">
                               <v-list-item-title>{{getTeamName(item.team_id)}}</v-list-item-title>
+                              <v-list-item-action>
+                                <v-btn icon @click="changeLineup(item, index)">
+                                  <v-icon>edit</v-icon>
+                                </v-btn>
+                              </v-list-item-action>
                             </v-list-item>
                             <v-divider :key="`${index}-${index}`" />
                           </template>
@@ -114,6 +119,7 @@
       this.getPlayers();
     },
     data: () => ({
+      loading: false,
       tab: 0,
       tournaments: [],
       teams: [],
@@ -139,6 +145,7 @@
         entry_phase: null,
         players: []
       },
+      currentLineupIndex: null,
       selectedTournament: {
         id: null,
         name: '',
@@ -149,6 +156,11 @@
       }
     }),
     methods: {
+      changeLineup(lineup, index) {
+        this.currentLineup = Object.assign({}, lineup);
+        this.currentLineupIndex = index;
+        this.editLineup = true;
+      },
       newLineup() {
         this.currentLineup = {
           team_id: null,
@@ -158,7 +170,11 @@
         this.editLineup = true;
       },
       saveLineup() {
-        this.selectedTournament.lineups.push(Object.assign({}, this.currentLineup));
+        if (this.currentLineupIndex === null)
+          this.selectedTournament.lineups.push(Object.assign({}, this.currentLineup));
+        else
+          this.selectedTournament.lineups[this.currentLineupIndex] = Object.assign({}, this.currentLineup);
+        this.currentLineupIndex = null;
         this.editLineup = false;
       },
       closeDialog() {
@@ -181,12 +197,22 @@
         this.closeDialog();
       },
       editTournament(tournament) {
-        this.selectedTournament = Object.assign({}, tournament);
+        this.getTournamentId(tournament.id);
+        // this.selectedTournament = Object.assign({}, tournament);
         this.dialog = true;
       },
       getTournaments() {
+        this.loading = true;
         axios.get('v1/tournament').then(res => {
+          this.loading = false;
           this.tournaments = res.data.tournaments;
+        })
+      },
+      getTournamentId(id) {
+        this.loading = true;
+        axios.get(`v1/tournament/${id}`).then(res => {
+          this.loading = false;
+          this.selectedTournament = res.data.tournament;
         })
       },
       getTeamName(id) {

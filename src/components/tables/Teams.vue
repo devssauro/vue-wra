@@ -1,10 +1,15 @@
 <template>
-  <v-data-table :headers="headers" :items="teams" :items-per-page="10" sort-by="name" class="elevation-0">
+  <v-data-table :loading="loading" :headers="headers" :items="teams" :items-per-page="10" sort-by="name" class="elevation-0" :search="search" :custom-filter="filter">
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Times</v-toolbar-title>
         <v-divider class="mx-4" inset vertical />
-        <v-spacer></v-spacer>
+        <v-text-field
+          dense
+          v-model="search"
+          label="Search"
+          class="mx-4 mb-n2"/>
+        <!-- <v-spacer></v-spacer> -->
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn depressed color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
@@ -60,6 +65,8 @@
       this.getTeams()
     },
     data: () => ({
+      loading: false,
+      search: null,
       teams: [],
       dialog: false,
       headers: [
@@ -102,10 +109,18 @@
         this.dialog = true;
       },
       getTeams() {
+        this.loading = true;
         axios.get('v1/team').then(res => {
+          this.loading = false;
           this.teams = res.data.teams;
         })
-      }
+      },
+      filter (value, search, item) {
+        return value != null &&
+          search != null &&
+          typeof value === 'string' &&
+          value.toString().indexOf(search) !== -1
+      },
     },
     computed: {
       formTitle () {

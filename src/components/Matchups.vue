@@ -5,7 +5,7 @@
         <v-col cols="2">
           <v-sheet rounded="lg">
             <v-list color="transparent">
-              <v-list-item link @click="newMatchup" v-if="host">
+              <v-list-item link @click="newMatchup" v-if="isOperationalUser">
                 <v-list-item-content>
                   <v-list-item-title>
                     <v-icon>
@@ -57,11 +57,11 @@
                         <v-list-item link>
                           <v-list-item-title>Ver mapas</v-list-item-title>
                         </v-list-item>
-                        <v-divider v-if="host" />
-                        <v-list-item v-if="host" link>
+                        <v-divider v-if="isOperationalUser" />
+                        <v-list-item v-if="isOperationalUser" link>
                           <v-list-item-title @click="newMap(matchup.id)">Novo mapa</v-list-item-title>
                         </v-list-item>
-                        <v-list-item v-if="host" link>
+                        <v-list-item v-if="isOperationalUser" link>
                           <v-list-item-title>Selecionar MVP</v-list-item-title>
                         </v-list-item>
                       </v-list>
@@ -98,6 +98,7 @@
 </template>
 
 <script>
+  import {bus} from '@/main';
   import moment from 'moment';
   import axios from 'axios';
   import MatchupDialog from '@/components/dialogs/MatchupDialog'
@@ -108,10 +109,22 @@
       MatchupDialog,
       MapDialog
     },
+    computed: {
+      isOperationalUser() {
+        if (this.user !== null && this.user !== undefined) {
+          return this.user.roles.indexOf('operational') > -1;
+        } else
+          return false;
+      },
+    },
     created() {
       this.getTournaments();
+      bus.$on('login', (user) => {
+        this.user = user;
+      });
     },
     data: () => ({
+      user: JSON.parse(localStorage.getItem('user')),
       host: window.location.host.indexOf('localhost') > -1,
       selectedTournaments: [],
       tournaments: [],
@@ -124,7 +137,6 @@
     }),
     watch: {
       selectedTournaments: function (t) {
-        console.log(t);
         this.getMatchups(t);
       }
     },

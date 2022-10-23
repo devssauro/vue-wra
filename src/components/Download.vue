@@ -20,7 +20,7 @@
             </v-row>
           </v-sheet>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="6">
           <v-card class="pb-4">
             <v-card-title>Picks & Bans</v-card-title>
             <v-card-text>
@@ -30,6 +30,12 @@
                 item-text="title" item-value="value" />
               <v-select label="pick_rotation" filled dense v-model="search.pick_rotation" :items="pickRotation"
                 item-text="title" item-value="value" />
+              <v-select label="Campos de objetivos" filled @change="changeObjectiveValues" :items="objectiveTypes"
+                item-text="title" item-value="value" v-model="objectiveFieldsValue" v-if="isAnalystUser" />
+              <template v-for="binField in binFields" v-if="false">
+                <v-select :key="binField" :label="binField" filled dense v-model="search.have_first_blood" :items="objectiveTypes"
+                  item-text="title" item-value="value" />
+              </template>
             </v-card-text>
             <v-card-actions class="mt-n4">
               <v-row>
@@ -46,7 +52,7 @@
             </v-card-actions>
           </v-card>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="6">
           <v-card class="pb-4">
             <v-card-title>Times</v-card-title>
             <v-card-text>
@@ -67,9 +73,9 @@
               </v-row>
             </v-card-actions>
           </v-card>
-        </v-col>
-        <v-col cols="4">
-          <v-card class="pb-4">
+        <!-- </v-col>
+        <v-col cols="4"> -->
+          <v-card class="pb-4 mt-4">
             <v-card-title>Jogos</v-card-title>
             <v-card-text>
             </v-card-text>
@@ -102,13 +108,23 @@
 </template>
 
 <script>
+import {bus} from '@/main';
 import axios from 'axios';
 export default {
   created() {
     this.getTournaments();
     this.getTeams();
+    bus.$on('login', (user) => {
+      this.user = user;
+    });
   },
   computed: {
+    isAnalystUser() {
+      if (this.user !== null && this.user !== undefined) {
+        return this.user.roles.indexOf('analyst') > -1;
+      } else
+        return false;
+    },
     axiosParams() {
       const params = new URLSearchParams();
       for (let t in this.search.t) {
@@ -127,25 +143,53 @@ export default {
       params.append('winner_loser', this.search.winner_loser);
       params.append('blind_response', this.search.blind_response);
       params.append('pick_rotation', this.search.pick_rotation);
-      console.log(params.toString());
+      for (let field in this.binFields)
+        params.append(this.binFields[field], this.objectiveFieldsValue);
+      // console.log(params.toString());
       return params;
     }
   },
   data: () => ({
+    user: JSON.parse(localStorage.getItem('user')),
     snackText: 'AAAAAAAA',
     snackbar: false,
     tournaments: [],
     teams: [],
     route: window.location.host.indexOf('localhost') > -1 ? `http://localhost:5010` : `https://wrflask.dinossauro.dev`,
+    objectiveFieldsValue: 'numeric',
     search: {
       patch: [null],
-      t: [7],
+      t: [8],
       team: [null],
       sort: 'name',
       winner_loser: 'numeric',
       blind_response: 'numeric',
-      pick_rotation: 'explicit_eng'
+      pick_rotation: 'explicit_eng',
+      have_first_blood: 'numeric',
+      is_player_first_blood: 'numeric',
+      is_player_first_death: 'numeric',
+      have_first_herald: 'numeric',
+      first_herald_teamfight: 'numeric',
+      have_first_tower: 'numeric',
+      first_tower_herald: 'numeric',
+      have_first_drake: 'numeric',
+      first_drake_teamfight: 'numeric',
+      have_second_drake: 'numeric',
+      second_drake_teamfight: 'numeric',
+      have_third_drake: 'numeric',
+      third_drake_teamfight: 'numeric',
     },
+    binFields: ['have_first_herald', 'first_herald_teamfight', 'have_first_tower', 'first_tower_herald', 'have_first_drake', 'first_drake_teamfight', 'have_second_drake', 'second_drake_teamfight', 'have_third_drake', 'third_drake_teamfight'],
+    objectiveTypes: [
+      {
+        'title': 'Numérico (1/0)',
+        'value': 'numeric'
+      },
+      {
+        'title': 'Binário (true/false)',
+        'value': 'binary'
+      }
+    ],
     winnerLoser: [
       {
         'title': 'English (winner/loser)', 
@@ -206,6 +250,11 @@ export default {
     ],
   }),
   methods: {
+    changeObjectiveValues(v) {
+      for (var field in this.binField)
+        this.search[field] = v;
+
+    },
     getTournaments() {
       axios.get('v1/tournament').then(res => {
         this.tournaments = res.data.tournaments.map(m => {
@@ -227,7 +276,20 @@ export default {
       this.getTeams();
     },
     downloadPicksBans() {
-      window.location = `${this.route}/v1/download/picks_bans?${this.axiosParams.toString()}`;
+      axios({
+        url: `${this.route}/v1/download/picks_bans?${this.axiosParams.toString()}`,
+        method: 'GET',
+        responseType: 'blob', // important
+      }).then((response) => {
+        console.log(response.headers['content-disposition']);
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'file.csv');
+        document.body.appendChild(link);
+        link.click();
+      });
+      // window.location = ;
     },
     copyPicksBansLink(notify) {
       const route = `${this.route}/v1/download/picks_bans?${this.axiosParams.toString()}`;

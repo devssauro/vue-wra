@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="players" :items-per-page="10" sort-by="name" class="elevation-0" :search="search" :custom-filter="filter">
+  <v-data-table :loading="loading" :headers="headers" :items="players" :items-per-page="10" sort-by="name" class="elevation-0" :search="search" :custom-filter="filter">
     <template v-slot:top>
       <v-toolbar flat>
         <v-toolbar-title>Players</v-toolbar-title>
@@ -75,6 +75,7 @@
       // this.getPlayers();
     },
     data: () => ({
+      loading: false,
       search: null,
       players: [],
       teams: [],
@@ -124,7 +125,9 @@
         this.dialog = true;
       },
       getPlayers() {
+        this.loading = true;
         axios.get('v1/player').then(res => {
+          this.loading = false;
           this.players = res.data.players;
         });
       },
