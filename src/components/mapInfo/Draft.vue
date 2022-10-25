@@ -67,26 +67,41 @@
     name: 'Matchups',
     props: {
       map: Object,
-      teams: Object
+      teams: Object,
+      champions: Array
     },
     components: {
       ChampionField
     },
     created () {
-      this.getChampions();
     },
     watch: {
     },
     computed: {
+      blueChampions() {
+        return this.champions.filter(c => 
+          c.id === this.map.blue_pick_1 || 
+          c.id === this.map.blue_pick_2 || 
+          c.id === this.map.blue_pick_3 || 
+          c.id === this.map.blue_pick_4 || 
+          c.id === this.map.blue_pick_5
+        );
+      },
+      redChampions() {
+        return this.champions.filter(c => 
+          c.id === this.map.red_pick_1 || 
+          c.id === this.map.red_pick_2 || 
+          c.id === this.map.red_pick_3 || 
+          c.id === this.map.red_pick_4 || 
+          c.id === this.map.red_pick_5
+        );
+      }
     },
     data() {
       return {
         teamsList: [this.teams.team1, this.teams.team2],
         blueSidePlayers: [],
         redSidePlayers: [],
-        champions: [],
-        blueChampions: [],
-        redChampions: [],
       }
     },
     methods: {
@@ -113,15 +128,6 @@
       },
       getImg(champion) {
         return require(`@/assets/${champion}.png`);
-      },
-      getChampions() {
-        this.isLoading = true;
-        axios.get('v1/champion').then(res => {
-          this.champions = res.data.champions;
-          this.isLoading = false;
-          this.blueChampions = this.champions.filter(c => c.id === this.map.blue_baron_pick || c.id === this.map.blue_jungle_pick || c.id === this.map.blue_mid_pick || c.id === this.map.blue_dragon_pick || c.id === this.map.blue_sup_pick);
-          this.redChampions = this.champions.filter(c => c.id === this.map.red_baron_pick || c.id === this.map.red_jungle_pick || c.id === this.map.red_mid_pick || c.id === this.map.red_dragon_pick || c.id === this.map.red_sup_pick);
-        });
       },
       getPlayerName(teamId, playerId) {
         if (this.teams.team1.id == teamId)

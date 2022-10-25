@@ -11,19 +11,19 @@
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <v-select dense v-model="map.team_first_blood" @change="setTeamFirstDeath" outlined label="Time"
+                <v-select dense clearable v-model="map.team_first_blood" @change="setTeamFirstDeath" outlined label="Time"
                   :items="teamsList" item-text="name" item-value="id" />
               </v-col>
               <v-col cols="6">
-                <v-select dense v-model="map.player_first_blood" outlined label="First Blood" :items="firstBloodTeam()"
+                <v-select dense clearable v-model="map.player_first_blood" outlined label="First Blood" :items="firstBloodTeam()"
                   item-text="nickname" item-value="id" />
               </v-col>
               <v-col cols="6">
-                <v-select dense v-model="map.player_first_death" outlined label="First Death" :items="firstDeathTeam()"
+                <v-select dense clearable v-model="map.player_first_death" outlined label="First Death" :items="firstDeathTeam()"
                   item-text="nickname" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense v-model="map.place_first_blood" outlined label="Local" :items="roles" />
+                <v-select dense clearable v-model="map.place_first_blood" outlined label="Local" :items="roles" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -38,11 +38,11 @@
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <v-select dense v-model="map.team_first_herald" outlined label="Time" :items="teamsList"
+                <v-select dense clearable v-model="map.team_first_herald" outlined label="Time" :items="teamsList"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12" class="mb-8">
-                <v-checkbox dense v-model="map.first_herald_teamfight" label="Com luta" />
+                <v-checkbox dense clearable v-model="map.first_herald_teamfight" label="Com luta" />
               </v-col>
               <v-col cols="12" class="mb-12">
               </v-col>
@@ -59,11 +59,11 @@
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <v-select dense dense v-model="map.team_first_tower" outlined label="Time" :items="teamsList"
+                <v-select dense clearable v-model="map.team_first_tower" outlined label="Time" :items="teamsList"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense dense v-model="map.first_tower_route" outlined label="Rota" :items="roles"
+                <v-select dense clearable v-model="map.first_tower_route" outlined label="Rota" :items="roles"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
@@ -82,11 +82,11 @@
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <v-select dense dense v-model="map.team_first_drake" outlined label="Time" :items="teamsList"
+                <v-select dense clearable v-model="map.team_first_drake" outlined label="Time" :items="teamsList"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense dense v-model="map.first_drake_type" outlined label="Dragão" :items="drakes"
+                <v-select dense clearable v-model="map.first_drake_type" outlined label="Dragão" :items="drakes"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
@@ -105,11 +105,11 @@
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <v-select dense dense v-model="map.team_second_drake" outlined label="Time" :items="teamsList"
+                <v-select dense clearable v-model="map.team_second_drake" outlined label="Time" :items="teamsList"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense dense v-model="map.second_drake_type" outlined label="Dragão" :items="drakes"
+                <v-select dense clearable v-model="map.second_drake_type" outlined label="Dragão" :items="drakes"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
@@ -128,11 +128,11 @@
           <v-card-text>
             <v-row>
               <v-col cols="12">
-                <v-select dense dense v-model="map.team_third_drake" outlined label="Time" :items="teamsList"
+                <v-select dense clearable v-model="map.team_third_drake" outlined label="Time" :items="teamsList"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense dense v-model="map.third_drake_type" outlined label="Dragão" :items="drakes"
+                <v-select dense clearable v-model="map.third_drake_type" outlined label="Dragão" :items="drakes"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">

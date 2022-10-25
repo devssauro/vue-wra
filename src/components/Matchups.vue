@@ -47,7 +47,7 @@
                       <template v-if="matchup.maps.length === 1">
                         <template v-for="n in [0]">
                           <v-col cols="12">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -60,7 +60,7 @@
                       <template v-if="matchup.maps.length === 2">
                         <template v-for="n in [0, 1]">
                           <v-col cols="6">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -73,7 +73,7 @@
                       <template v-if="matchup.maps.length === 3">
                         <template v-for="n in [0, 1, 2]">
                           <v-col cols="4">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -86,7 +86,7 @@
                       <template v-if="matchup.maps.length === 4">
                         <template v-for="n in [0, 1, 2, 3]">
                           <v-col cols="3">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -99,7 +99,7 @@
                       <template v-if="matchup.maps.length === 5">
                         <template v-for="n in [0, 1, 2]">
                           <v-col cols="4">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -110,7 +110,7 @@
                         </template>
                         <template v-for="n in [3, 4]">
                           <v-col cols="6">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -123,7 +123,7 @@
                       <template v-if="matchup.maps.length === 6">
                         <template v-for="n in [0, 1, 2, 3, 4, 5]">
                           <v-col cols="4">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -136,7 +136,7 @@
                       <template v-if="matchup.maps.length === 7">
                         <template v-for="n in [0, 1, 2, 3]">
                           <v-col cols="3">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -147,7 +147,7 @@
                         </template>
                         <template v-for="n in [4, 5, 6]">
                           <v-col cols="4">
-                            <v-card :color="matchup.maps[n].winner_side">
+                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
                               <v-card-title>
                                 {{matchup[matchup.maps[n].winner].tag}}
                                 <v-spacer />
@@ -163,25 +163,6 @@
                         </v-btn>
                       </v-col>
                     </v-row>
-                    <!-- <v-menu bottom left>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon v-bind="attrs" v-on="on">
-                          <v-icon>more_vert</v-icon>
-                        </v-btn>
-                      </template>
-                      <v-list>
-                        <v-list-item link>
-                          <v-list-item-title>Ver mapas</v-list-item-title>
-                        </v-list-item>
-                        <v-divider v-if="isOperationalUser" />
-                        <v-list-item v-if="isOperationalUser" link>
-                          <v-list-item-title @click="newMap(matchup.id)">Novo mapa</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item v-if="isOperationalUser" link>
-                          <v-list-item-title>Selecionar MVP</v-list-item-title>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu> -->
                   </v-expansion-panel-content>
                 </v-expansion-panel>
                 <!-- <v-divider :key="`${matchup.id}-${matchup.id}`"/> -->

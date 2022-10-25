@@ -10,10 +10,10 @@
         <team-side :map="map" :teams="teamsInfo" />
       </v-tab-item>
       <v-tab-item>
-        <picks-bans :map="map" :teams="teamsInfo" />
+        <picks-bans :map="map" :teams="teamsInfo" :champions="champions" />
       </v-tab-item>
       <v-tab-item>
-        <draft :map="map" :teams="teamsInfo" />
+        <draft :map="map" :teams="teamsInfo" :champions="champions"/>
       </v-tab-item>
       <v-tab-item>
         <objectives :map="map" :teams="teamsInfo" />
@@ -47,12 +47,39 @@
     created () {
       console.log(this.matchup);
       this.getPlayers();
+      this.getChampions();
+    },
+    computed: {
     },
     data() {
       return {
+        champions: [],
         tab: null,
         tabs: ['side', 'Picks & Bans', 'Champion Picks', 'Objectives', 'Map stats'],
-        teamsInfo: {}, 
+        teamsInfo: {
+          team1: {
+            id: 1,
+            name: 'team1',
+            players: [
+              {id: 1, nickname: 'Baron', 'role': 1},
+              {id: 2, nickname: 'Jungle', 'role': 2},
+              {id: 3, nickname: 'Mid', 'role': 3},
+              {id: 4, nickname: 'Dragon', 'role': 4},
+              {id: 5, nickname: 'Sup', 'role': 5},
+            ]
+          },
+          team2: {
+            id: 2,
+            name: 'team2',
+            players: [
+              {id: 6, nickname: 'Baron', 'role': 6},
+              {id: 7, nickname: 'Jungle', 'role': 7},
+              {id: 8, nickname: 'Mid', 'role': 8},
+              {id: 9, nickname: 'Dragon', 'role': 9},
+              {id: 10, nickname: 'Sup', 'role': 10},
+            ]
+          }
+        }, 
         teamsList: [],
         map: {
           blue_side: null,
@@ -76,6 +103,13 @@
         axios.get(`/v1/matchup/${this.matchup}/teams`).then(res => {
           this.teamsInfo = res.data;
           // console.log(this.teamsInfo);
+        });
+      },
+      getChampions() {
+        this.isLoading = true;
+        axios.get('v1/champion').then(res => {
+          this.champions = res.data.champions;
+          this.isLoading = false;
         });
       },
       save(signal) {
