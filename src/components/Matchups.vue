@@ -35,19 +35,135 @@
             min-height="70vh"
             rounded="lg">
             <!-- {{Matchups}} -->
-            <v-list rounded>
+            <v-expansion-panels :multiple="false" accordion>
               <template v-for="matchup in matchups">
-                <v-list-item :key="matchup.id">
-                  <v-list-item-content>
-                    <v-list-item-title>
-                      {{matchup.team1.name}} X {{matchup.team2.name}}
-                    </v-list-item-title>
-                    <v-list-item-subtitle>
-                      {{matchup.datetime}}
-                    </v-list-item-subtitle>
-                  </v-list-item-content>
-                  <v-list-item-action>
-                    <v-menu bottom left>
+                <v-expansion-panel :key="matchup.id">
+                  <v-expansion-panel-header>
+                      <span>{{matchup.datetime}} | {{matchup.team1.name}} X {{matchup.team2.name}}</span>
+                      <v-spacer /> <span/>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <v-row>
+                      <template v-if="matchup.maps.length === 1">
+                        <template v-for="n in [0]">
+                          <v-col cols="12">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                      </template>
+                      <template v-if="matchup.maps.length === 2">
+                        <template v-for="n in [0, 1]">
+                          <v-col cols="6">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                      </template>
+                      <template v-if="matchup.maps.length === 3">
+                        <template v-for="n in [0, 1, 2]">
+                          <v-col cols="4">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                      </template>
+                      <template v-if="matchup.maps.length === 4">
+                        <template v-for="n in [0, 1, 2, 3]">
+                          <v-col cols="3">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                      </template>
+                      <template v-if="matchup.maps.length === 5">
+                        <template v-for="n in [0, 1, 2]">
+                          <v-col cols="4">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                        <template v-for="n in [3, 4]">
+                          <v-col cols="6">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                      </template>
+                      <template v-if="matchup.maps.length === 6">
+                        <template v-for="n in [0, 1, 2, 3, 4, 5]">
+                          <v-col cols="4">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                      </template>
+                      <template v-if="matchup.maps.length === 7">
+                        <template v-for="n in [0, 1, 2, 3]">
+                          <v-col cols="3">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                        <template v-for="n in [4, 5, 6]">
+                          <v-col cols="4">
+                            <v-card :color="matchup.maps[n].winner_side">
+                              <v-card-title>
+                                {{matchup[matchup.maps[n].winner].tag}}
+                                <v-spacer />
+                                {{matchup.maps[n].length}}
+                              </v-card-title>
+                            </v-card>
+                          </v-col>
+                        </template>
+                      </template>
+                      <v-col cols="12">
+                        <v-btn block depressed color="success" v-if="isOperationalUser" @click="newMap(matchup.id)">
+                          Adicionar mapa
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                    <!-- <v-menu bottom left>
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn icon v-bind="attrs" v-on="on">
                           <v-icon>more_vert</v-icon>
@@ -65,12 +181,12 @@
                           <v-list-item-title>Selecionar MVP</v-list-item-title>
                         </v-list-item>
                       </v-list>
-                    </v-menu>
-                  </v-list-item-action>
-                </v-list-item>
-                <v-divider :key="`${matchup.id}-${matchup.id}`"/>
+                    </v-menu> -->
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+                <!-- <v-divider :key="`${matchup.id}-${matchup.id}`"/> -->
               </template>
-            </v-list>        
+            </v-expansion-panels>        
           </v-sheet>
         </v-col>
       </v-row>
@@ -152,7 +268,7 @@
         }
         axios.get('v1/matchup', {'params': params}).then(res => {
           this.matchups = res.data.matchups.map(m => {
-            m.datetime = moment(`${m.datetime}-3`).format('DD/MM/YYYY HH:mm');
+            m.datetime = moment(`${m.datetime}-3`).format('DD/MM/YY HH:mm');
             return m;
           });
           if(this.matchups.length > 0)
@@ -166,7 +282,7 @@
             // m.datetime = moment(`${m.datetime}`).format('DD/MM/YYYY HH:mm');
             return m;
           });
-          this.selectedTournaments = 8;
+          this.selectedTournaments = 7;
           this.getMatchups(this.selectedTournaments);
         });
       },
