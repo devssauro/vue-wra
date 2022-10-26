@@ -2,7 +2,7 @@
   <v-container fluid>
     <!-- {{map}} -->
     <v-row>
-      <v-col cols="4">
+      <v-col cols="6">
         <v-card color="red darken-3" dark outlined>
           <v-card-title style="display: flex; justify-content: center">
             First Blood
@@ -29,28 +29,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="4">
-        <v-card color="purple" dark outlined>
-          <v-card-title style="display: flex; justify-content: center">
-            First Herald
-          </v-card-title>
-          <v-divider />
-          <v-card-text>
-            <v-row>
-              <v-col cols="12">
-                <v-select dense clearable v-model="map.team_first_herald" outlined label="Time" :items="teamsList"
-                  item-text="name" item-value="id" />
-              </v-col>
-              <v-col cols="12" class="mb-8">
-                <v-checkbox dense clearable v-model="map.first_herald_teamfight" label="Com luta" />
-              </v-col>
-              <v-col cols="12" class="mb-12">
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
+      <v-col cols="6">
         <v-card color="deep-orange darken-3" dark outlined>
           <v-card-title style="display: flex; justify-content: center">
             First tower
@@ -67,7 +46,51 @@
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-checkbox class="pl-1" v-model="map.first_tower_herald" label="Com arauto" />
+                <v-checkbox v-model="map.first_tower_herald" label="Com arauto" />
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card color="purple" dark outlined>
+          <v-card-title style="display: flex; justify-content: center">
+            First Herald
+          </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <v-row>
+              <v-col cols="12">
+                <v-select dense clearable v-model="map.team_first_herald" outlined label="Time" :items="teamsList"
+                  item-text="name" item-value="id" />
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox dense clearable v-model="map.first_herald_teamfight" label="Com luta" />
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox dense clearable v-model="map.first_herald_stealed" label="Arauto roubado" />
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card color="purple" dark outlined>
+          <v-card-title style="display: flex; justify-content: center">
+            Second Herald
+          </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <v-row>
+              <v-col cols="12">
+                <v-select dense clearable v-model="map.team_second_herald" outlined label="Time" :items="teamsList"
+                  item-text="name" item-value="id" />
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox dense clearable v-model="map.second_herald_teamfight" label="Com luta" />
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox dense clearable v-model="map.second_herald_stealed" label="Arauto roubado" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -89,8 +112,11 @@
                 <v-select dense clearable v-model="map.first_drake_type" outlined label="Dragão" :items="drakes"
                   item-text="name" item-value="id" />
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-checkbox v-model="map.first_drake_teamfight" label="Com luta" />
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="map.first_drake_stealed" label="Dragão roubado" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -112,8 +138,11 @@
                 <v-select dense clearable v-model="map.second_drake_type" outlined label="Dragão" :items="drakes"
                   item-text="name" item-value="id" />
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-checkbox v-model="map.second_drake_teamfight" label="Com luta" />
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="map.second_drake_stealed" label="Dragão roubado" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -135,8 +164,11 @@
                 <v-select dense clearable v-model="map.third_drake_type" outlined label="Dragão" :items="drakes"
                   item-text="name" item-value="id" />
               </v-col>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-checkbox v-model="map.third_drake_teamfight" label="Com luta" />
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="map.third_drake_stealed" label="Dragão roubado" />
               </v-col>
             </v-row>
           </v-card-text>

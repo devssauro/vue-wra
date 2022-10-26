@@ -154,7 +154,7 @@
     search: {
       champion_id: 1,
       // role: ['mid'],
-      t: 8,
+      t: null,
       patch: null,
       side: null
     },

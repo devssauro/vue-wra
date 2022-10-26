@@ -553,7 +553,7 @@
       ],
       search: {
         patch: null,
-        t: 8,
+        t: null,
         team: null,
         sort: 'name'
       },
