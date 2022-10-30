@@ -10,7 +10,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
+    "momentjs": "^2.0.0",
     "v-mask": "^2.2.4",
     "v-money": "^0.8.1",
     "vue": "^2.6.11",

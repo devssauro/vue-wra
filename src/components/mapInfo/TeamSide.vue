@@ -114,10 +114,17 @@
     name: 'Matchups',
     props: {
       map: Object,
-      teams: Object
+      teams: Object,
     },
     created () {
-    },
+      if (this.teams.team1.id === this.map.blue_side) {
+        this.blueSidePlayers = this.teams.team1.players;
+        this.redSidePlayers = this.teams.team2.players;
+      } else {
+        this.blueSidePlayers = this.teams.team2.players;
+        this.redSidePlayers = this.teams.team1.players;
+      }
+      },
     watch: {
       'map.blue_side': function (val) {
         if (this.teams.team1.id === val) {

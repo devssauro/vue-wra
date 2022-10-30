@@ -3,7 +3,7 @@
     <!-- {{map}} -->
     <v-row>
       <v-col cols="6">
-        <v-card color="blue" dark outlined>
+        <v-card color="blue darken-2" dark outlined>
            <v-card-title style="display: flex; justify-content: center">
             {{[teams.team1, teams.team2].filter(t => t.id === map.blue_side)[0].name}}
           </v-card-title>
@@ -55,7 +55,7 @@
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card color="red" dark outlined>
+        <v-card color="red darken-2" dark outlined>
           <v-card-title style="display: flex; justify-content: center">
             {{[teams.team1, teams.team2].filter(t => t.id === map.red_side)[0].name}}
           </v-card-title>

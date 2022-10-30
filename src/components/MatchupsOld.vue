@@ -126,7 +126,7 @@
     data: () => ({
       user: JSON.parse(localStorage.getItem('user')),
       host: window.location.host.indexOf('localhost') > -1,
-      selectedTournaments: [],
+      selectedTournaments: 8,
       tournaments: [],
       matchupDialog: false,
       mapDialog: false,

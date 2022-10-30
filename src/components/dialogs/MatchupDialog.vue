@@ -96,7 +96,7 @@
       this.getTeams();
     },
     props: {
-      tournament: Number
+      tournamentId: Number
     },
     data() {
       return {
@@ -107,9 +107,11 @@
         menuTime: false,
         teams: [],
         time: '00:00:00',
-        tournament: null,
+        tournament: {
+          phases: [],
+        },
         matchup: {
-          tournament_id: this.tournament,
+          tournament_id: this.tournamentId,
           datetime: `${(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10)} 00:00:00`,
           team1_id: null,
           team2_id: null,
@@ -133,15 +135,16 @@
     },
     methods: {
       getTeams() {
-        axios.get('http://localhost:5010/v1/team', {params: {t: this.tournament, sort: 'tag'}}).then(res => {
+        axios.get('http://localhost:5010/v1/team', {params: {t: this.tournamentId, sort: 'tag'}}).then(res => {
           this.teams = res.data.teams;
           this.matchup.team1_id = this.teams[0].id;
           this.matchup.team2_id = this.teams[1].id;
         });
       },
       getTournament() {
-        axios.get(`v1/tournament/${this.tournament}`).then(res => {
-          this.tournament = res.data;
+        axios.get(`v1/tournament/${this.tournamentId}`).then(res => {
+          this.tournament = res.data.tournament;
+          console.log(this.tournament);
           this.matchup.phase = this.tournament.phases[0];
         });
       },

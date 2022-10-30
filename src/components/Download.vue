@@ -33,7 +33,7 @@
               <v-select label="Campos de objetivos" filled @change="changeObjectiveValues" :items="objectiveTypes"
                 item-text="title" item-value="value" v-model="objectiveFieldsValue" v-if="isAnalystUser" />
               <template v-for="binField in binFields" v-if="false">
-                <v-select :key="binField" :label="binField" filled dense v-model="search.have_first_blood" :items="objectiveTypes"
+                <v-select :key="binField" :label="binField" filled dense v-model="search.first_blood" :items="objectiveTypes"
                   item-text="title" item-value="value" />
               </template>
             </v-card-text>
@@ -127,6 +127,9 @@ export default {
     },
     axiosParams() {
       const params = new URLSearchParams();
+      if (this.user !== null && this.user !== undefined) {
+        params.append('auth_token', this.user.authentication_token);
+      }
       for (let t in this.search.t) {
         if (this.search.t[t] !== null)
           params.append('t', this.search.t[t]);
@@ -165,21 +168,48 @@ export default {
       winner_loser: 'numeric',
       blind_response: 'numeric',
       pick_rotation: 'explicit_eng',
-      have_first_blood: 'numeric',
+      first_blood: 'numeric',
       is_player_first_blood: 'numeric',
       is_player_first_death: 'numeric',
-      have_first_herald: 'numeric',
+      first_herald: 'numeric',
       first_herald_teamfight: 'numeric',
-      have_first_tower: 'numeric',
+      first_herald_stealed: 'numeric',
+      first_herald: 'numeric',
+      first_herald_teamfight: 'numeric',
+      first_herald_stealed: 'numeric',
+      first_tower: 'numeric',
       first_tower_herald: 'numeric',
-      have_first_drake: 'numeric',
+      first_drake: 'numeric',
       first_drake_teamfight: 'numeric',
-      have_second_drake: 'numeric',
+      first_drake_stealed: 'numeric',
+      second_drake: 'numeric',
       second_drake_teamfight: 'numeric',
-      have_third_drake: 'numeric',
+      second_drake_stealed: 'numeric',
+      third_drake: 'numeric',
       third_drake_teamfight: 'numeric',
+      third_drake_stealed: 'numeric',
     },
-    binFields: ['have_first_herald', 'first_herald_teamfight', 'have_first_tower', 'first_tower_herald', 'have_first_drake', 'first_drake_teamfight', 'have_second_drake', 'second_drake_teamfight', 'have_third_drake', 'third_drake_teamfight'],
+    binFields: [
+      'first_herald',
+      'first_herald_teamfight', 
+      'first_herald_stealed',
+      'second_herald',
+      'second_herald_teamfight', 
+      'second_herald_stealed',
+      'first_tower', 
+      'first_tower_herald', 
+      'first_drake', 
+      'first_drake_teamfight', 
+      'first_drake', 
+      'first_drake_teamfight', 
+      'first_drake_stealed',
+      'second_drake', 
+      'second_drake_teamfight', 
+      'second_drake_stealed',
+      'third_drake', 
+      'third_drake_teamfight',
+      'second_drake_stealed'
+    ],
     objectiveTypes: [
       {
         'title': 'Numérico (1/0)',
@@ -276,20 +306,20 @@ export default {
       this.getTeams();
     },
     downloadPicksBans() {
-      axios({
-        url: `${this.route}/v1/download/picks_bans?${this.axiosParams.toString()}`,
-        method: 'GET',
-        responseType: 'blob', // important
-      }).then((response) => {
-        console.log(response.headers['content-disposition']);
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'file.csv');
-        document.body.appendChild(link);
-        link.click();
-      });
-      // window.location = ;
+      // axios({
+      //   url: `${this.route}/v1/download/picks_bans?${this.axiosParams.toString()}`,
+      //   method: 'GET',
+      //   responseType: 'blob', // important
+      // }).then((response) => {
+      //   console.log(response.headers['content-disposition']);
+      //   const url = window.URL.createObjectURL(new Blob([response.data]));
+      //   const link = document.createElement('a');
+      //   link.href = url;
+      //   link.setAttribute('download',  'file.csv');
+      //   document.body.appendChild(link);
+      //   link.click();
+      // });
+      window.location = `${this.route}/v1/download/picks_bans?${this.axiosParams.toString()}`;
     },
     copyPicksBansLink(notify) {
       const route = `${this.route}/v1/download/picks_bans?${this.axiosParams.toString()}`;

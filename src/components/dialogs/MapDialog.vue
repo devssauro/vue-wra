@@ -7,7 +7,7 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <team-side :map="map" :teams="teamsInfo" />
+        <team-side v-if="teamsLoading" :map="map" :teams="teamsInfo" />
       </v-tab-item>
       <v-tab-item>
         <picks-bans :map="map" :teams="teamsInfo" :champions="champions" />
@@ -19,7 +19,7 @@
         <objectives :map="map" :teams="teamsInfo" />
       </v-tab-item>
       <v-tab-item>
-        <final-stats @save="save" :map="map" :teams="teamsInfo" />
+        <final-stats @save="save" :map="map" :teams="teamsInfo" :champions="champions" />
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -42,10 +42,12 @@
       FinalStats
     },
     props: {
-      matchup: Number
+      matchup: Number,
+      mapId: Number,
     },
     created () {
       console.log(this.matchup);
+      this.getMap();
       this.getPlayers();
       this.getChampions();
     },
@@ -53,6 +55,7 @@
     },
     data() {
       return {
+        teamsLoading: false,
         champions: [],
         tab: null,
         tabs: ['side', 'Picks & Bans', 'Champion Picks', 'Objectives', 'Map stats'],
@@ -94,15 +97,21 @@
           red_mid_player: null,
           red_dragon_player: null,
           red_sup_player: null,
-          patch: '3.3a',
+          patch: '3.4b',
         },
       }
     },
     methods: {
+      getMap() {
+        if (this.mapId !== null && this.mapId !== undefined) 
+          axios.get(`/v1/matchup/${this.matchup}/map/${this.mapId}/edit`).then(res => {
+            this.map = Object.assign({}, res.data);
+          });
+      },
       getPlayers() {
         axios.get(`/v1/matchup/${this.matchup}/teams`).then(res => {
-          this.teamsInfo = res.data;
-          // console.log(this.teamsInfo);
+          this.teamsInfo = Object.assign({}, res.data);
+          this.teamsLoading = true;
         });
       },
       getChampions() {
@@ -114,9 +123,14 @@
       },
       save(signal) {
         // console.log('MapDialog');
-        axios.post(`v1/matchup/${this.matchup}/map`, this.map).then(res => {
-          this.$emit('saved', true);
-        });
+        if (this.mapId !== null && this.mapId !== undefined) 
+          axios.put(`v1/matchup/${this.matchup}/map/${this.mapId}/edit`, this.map).then(res => {
+            this.$emit('saved', true);
+          });
+        else
+          axios.post(`v1/matchup/${this.matchup}/map`, this.map).then(res => {
+            this.$emit('saved', true);
+          });
       }
     }
   }

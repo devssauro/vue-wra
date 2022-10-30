@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import Matchups from '../components/MatchupsOld'
+  import Matchups from '../components/Matchups'
 
   export default {
     name: 'Home',

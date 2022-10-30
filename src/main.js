@@ -8,7 +8,7 @@ Vue.config.productionTip = false;
 
 window.axios = axios;
 // window.axios.defaults.baseURL = process.env.VUE_APP_API_URL;
-window.axios.defaults.baseURL = window.location.host.indexOf('localhost') > -1 ? `http://localhost:5010` : `https://wrflask.dinossauro.dev/`;
+window.axios.defaults.baseURL = window.location.host.indexOf('localhost') > -1 ? `http://localhost:5010` : `https://597e-2804-14d-5a83-5154-b4e9-6fd8-1df4-6ab5.sa.ngrok.io/`;
 // window.axios.defaults.baseURL = `https://wrabf.dinossauro.dev`;
 const token = localStorage.getItem('auth_token');
 const csrf = localStorage.getItem('csrf_token');

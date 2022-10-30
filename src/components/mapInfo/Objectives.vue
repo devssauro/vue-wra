@@ -23,7 +23,7 @@
                   item-text="nickname" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense clearable v-model="map.place_first_blood" outlined label="Local" :items="roles" />
+                <v-select dense clearable v-model="map.place_first_blood" outlined label="Local" :items="firstBloodPlaces" />
               </v-col>
             </v-row>
           </v-card-text>
@@ -42,7 +42,7 @@
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense clearable v-model="map.first_tower_route" outlined label="Rota" :items="roles"
+                <v-select dense clearable v-model="map.first_tower_route" outlined label="Rota" :items="towerRoutes"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
@@ -53,16 +53,19 @@
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card color="purple" dark outlined>
+        <v-card color="purple darken-2" dark outlined>
           <v-card-title style="display: flex; justify-content: center">
             First Herald
           </v-card-title>
           <v-divider />
           <v-card-text>
             <v-row>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-select dense clearable v-model="map.team_first_herald" outlined label="Time" :items="teamsList"
                   item-text="name" item-value="id" />
+              </v-col>
+              <v-col cols="6">
+                <v-select dense clearable v-model="map.first_herald_route" outlined label="Rota lançada" :items="towerRoutes" />
               </v-col>
               <v-col cols="6">
                 <v-checkbox dense clearable v-model="map.first_herald_teamfight" label="Com luta" />
@@ -75,16 +78,19 @@
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card color="purple" dark outlined>
+        <v-card color="purple darken-2" dark outlined>
           <v-card-title style="display: flex; justify-content: center">
             Second Herald
           </v-card-title>
           <v-divider />
           <v-card-text>
             <v-row>
-              <v-col cols="12">
+              <v-col cols="6">
                 <v-select dense clearable v-model="map.team_second_herald" outlined label="Time" :items="teamsList"
                   item-text="name" item-value="id" />
+              </v-col>
+              <v-col cols="6">
+                <v-select dense clearable v-model="map.second_herald_route" outlined label="Rota lançada" :items="towerRoutes" />
               </v-col>
               <v-col cols="6">
                 <v-checkbox dense clearable v-model="map.second_herald_teamfight" label="Com luta" />
@@ -97,7 +103,7 @@
         </v-card>
       </v-col>
       <v-col cols="4">
-        <v-card color="blue-grey" dark outlined>
+        <v-card color="blue-grey darken-2" dark outlined>
           <v-card-title style="display: flex; justify-content: center">
             First Drake
           </v-card-title>
@@ -123,7 +129,7 @@
         </v-card>
       </v-col>
       <v-col cols="4">
-        <v-card color="blue-grey" dark outlined>
+        <v-card color="blue-grey darken-2" dark outlined>
           <v-card-title style="display: flex; justify-content: center">
             Second Drake
           </v-card-title>
@@ -135,7 +141,7 @@
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense clearable v-model="map.second_drake_type" outlined label="Dragão" :items="drakes"
+                <v-select dense clearable v-model="map.second_drake_type" outlined label="Dragão" :items="secondDrakeOptions"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="6">
@@ -149,7 +155,7 @@
         </v-card>
       </v-col>
       <v-col cols="4">
-        <v-card color="blue-grey" dark outlined>
+        <v-card color="blue-grey darken-2" dark outlined>
           <v-card-title style="display: flex; justify-content: center">
             Third Drake
           </v-card-title>
@@ -161,7 +167,7 @@
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="12">
-                <v-select dense clearable v-model="map.third_drake_type" outlined label="Dragão" :items="drakes"
+                <v-select dense clearable v-model="map.third_drake_type" outlined label="Dragão" :items="thirdDrakeOptions"
                   item-text="name" item-value="id" />
               </v-col>
               <v-col cols="6">
@@ -193,14 +199,35 @@
     created () {
     },
     watch: {
+      'map.second_drake_type': function (val) {
+        if (val !== undefined && val !== null) {
+          this.map.third_drake_type = this.secondDrakeOptions.filter(d => d !== val)[0];
+        }
+      }
     },
     computed: {
+      secondDrakeOptions() {
+        return this.drakes.filter(d => d !== this.map.first_drake_type)
+      },
+      thirdDrakeOptions() {
+        return this.drakes.filter(d => d !== this.map.second_drake_type)
+      }
     },
     data() {
       return {
         teamsList: [this.teams.team1, this.teams.team2],
         blueSidePlayers: [],
         redSidePlayers: [],
+        firstBloodPlaces: [
+          'baron lane',
+          'mid lane',
+          'dragon lane',
+          'baron river',
+          'dragon river',
+          'blue jungle',
+          'red jungle',
+        ],
+        towerRoutes: ['baron', 'mid', 'dragon'],
         roles: ['baron', 'jungle', 'mid', 'dragon', 'sup'],
         drakes: ['infernal', 'mountain', 'ocean']
       }

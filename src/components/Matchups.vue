@@ -31,9 +31,7 @@
           </v-sheet>
         </v-col>
         <v-col>
-          <v-sheet
-            min-height="70vh"
-            rounded="lg">
+          <v-sheet min-height="70vh" rounded="lg">
             <!-- {{Matchups}} -->
             <v-expansion-panels :multiple="false" accordion>
               <template v-for="matchup in matchups">
@@ -44,116 +42,34 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <v-row>
-                      <template v-if="matchup.maps.length === 1">
-                        <template v-for="n in [0]">
-                          <v-col cols="12">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
-                          </v-col>
-                        </template>
-                      </template>
-                      <template v-if="matchup.maps.length === 2">
-                        <template v-for="n in [0, 1]">
-                          <v-col cols="6">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
-                          </v-col>
-                        </template>
-                      </template>
-                      <template v-if="matchup.maps.length === 3">
-                        <template v-for="n in [0, 1, 2]">
-                          <v-col cols="4">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
-                          </v-col>
-                        </template>
-                      </template>
-                      <template v-if="matchup.maps.length === 4">
-                        <template v-for="n in [0, 1, 2, 3]">
-                          <v-col cols="3">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
+                      <template v-if="matchup.maps.length === 1 || matchup.maps.length === 2 || matchup.maps.length === 3 || matchup.maps.length === 4 || matchup.maps.length === 6">
+                        <template v-for="map in matchup.maps">
+                          <v-col :cols="matchup.maps.length === 6 ? 3 : 12 / matchup.maps.length">
+                            <map-card @viewMap="viewMap" @editMap="editMap" :map="map" :matchup="matchup" />
                           </v-col>
                         </template>
                       </template>
                       <template v-if="matchup.maps.length === 5">
                         <template v-for="n in [0, 1, 2]">
                           <v-col cols="4">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
+                            <map-card @viewMap="viewMap" @editMap="editMap" :map="matchup.maps[n]" :matchup="matchup" />
                           </v-col>
                         </template>
                         <template v-for="n in [3, 4]">
                           <v-col cols="6">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
-                          </v-col>
-                        </template>
-                      </template>
-                      <template v-if="matchup.maps.length === 6">
-                        <template v-for="n in [0, 1, 2, 3, 4, 5]">
-                          <v-col cols="4">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
+                            <map-card @viewMap="viewMap" @editMap="editMap" :map="matchup.maps[n]" :matchup="matchup" />
                           </v-col>
                         </template>
                       </template>
                       <template v-if="matchup.maps.length === 7">
                         <template v-for="n in [0, 1, 2, 3]">
                           <v-col cols="3">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
+                            <map-card @viewMap="viewMap" @editMap="editMap" :map="matchup.maps[n]" :matchup="matchup" />
                           </v-col>
                         </template>
                         <template v-for="n in [4, 5, 6]">
                           <v-col cols="4">
-                            <v-card :color="`${matchup.maps[n].winner_side} darken-3`">
-                              <v-card-title>
-                                {{matchup[matchup.maps[n].winner].tag}}
-                                <v-spacer />
-                                {{matchup.maps[n].length}}
-                              </v-card-title>
-                            </v-card>
+                            <map-card @viewMap="viewMap" @editMap="editMap" :map="matchup.maps[n]" :matchup="matchup" />
                           </v-col>
                         </template>
                       </template>
@@ -171,11 +87,11 @@
           </v-sheet>
         </v-col>
       </v-row>
-      <v-dialog max-width="650" v-model="matchupDialog">
-        <matchup-dialog :tournament="selectedTournaments" v-if="matchupDialog" @saved="closeMatchupDialog" />
+      <v-dialog max-width="650" v-model="matchupDialog" persistent>
+        <matchup-dialog :tournament-id="selectedTournaments" v-if="matchupDialog" @saved="closeMatchupDialog" />
       </v-dialog>
-      <v-dialog fullscreen v-model="mapDialog" persistent>
-        <map-dialog v-if="mapDialog" @saved="closeMapDialog" :matchup="selectedMatchup" />
+      <v-dialog fullscreen v-model="mapDialog">
+        <map-dialog v-if="mapDialog" @saved="closeMapDialog" :matchup="selectedMatchup" :map-id="selectedMap" />
       </v-dialog>
     </v-container>
     <v-snackbar
@@ -200,11 +116,13 @@
   import axios from 'axios';
   import MatchupDialog from '@/components/dialogs/MatchupDialog'
   import MapDialog from '@/components/dialogs/MapDialog'
+  import MapCard from '@/components/matchup/MapCard'
   export default {
     name: 'MatchupsComp',
     components: {
       MatchupDialog,
-      MapDialog
+      MapDialog,
+      MapCard
     },
     computed: {
       isOperationalUser() {
@@ -223,14 +141,15 @@
     data: () => ({
       user: JSON.parse(localStorage.getItem('user')),
       host: window.location.host.indexOf('localhost') > -1,
-      selectedTournaments: [],
+      selectedTournaments: 8,
       tournaments: [],
       matchupDialog: false,
       mapDialog: false,
       snackText: '',
       snackbar: false,
       matchups: [],
-      selectedMatchup: null
+      selectedMatchup: null,
+      selectedMap: null,
     }),
     watch: {
       selectedTournaments: function (t) {
@@ -238,6 +157,14 @@
       }
     },
     methods: {
+      editMap(mapData) {
+        this.selectedMatchup = mapData.matchupId;
+        this.selectedMap = mapData.mapId;
+        this.mapDialog = true;
+      },
+      viewMap(mapData) {
+        console.log(mapData);
+      },
       getMatchups(tournaments) {
         let params = new URLSearchParams();
         if (Array.isArray(tournaments))
@@ -263,7 +190,7 @@
             // m.datetime = moment(`${m.datetime}`).format('DD/MM/YYYY HH:mm');
             return m;
           });
-          this.selectedTournaments = 7;
+          this.selectedTournaments = 8;
           this.getMatchups(this.selectedTournaments);
         });
       },
@@ -281,7 +208,7 @@
         this.snackbar = true;
       },
       closeMapDialog() {
-        this.getMatchups();
+        this.getMatchups(this.selectedTournaments);
         this.mapDialog = false;
         this.snackText = 'Novo mapa criado';
         this.snackbar = true;

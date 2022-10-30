@@ -43,6 +43,9 @@
           <v-divider />
          <v-card-text>
             <v-row>
+              <v-col cols="11" offset="1">
+                <v-text-field v-model="map.blue_turrets_destroyed" label="Torres destruídas" solo light/>
+              </v-col>
               <v-col cols="12">
                 <final-stats-blue side="blue" :map="map" :label="getPlayerName(map.blue_side, map.blue_baron_player)" field="baron" :champions="blueChampions" />
               </v-col>
@@ -70,6 +73,9 @@
           <v-divider />
           <v-card-text>
             <v-row>
+              <v-col cols="11">
+                <v-text-field v-model="map.red_turrets_destroyed" label="Torres destruídas" solo light/>
+              </v-col>
               <v-col cols="12">
                 <final-stats-red side="red" :map="map" :label="getPlayerName(map.red_side, map.red_baron_player)" field="baron" :champions="redChampions" />
               </v-col>
@@ -107,28 +113,30 @@
     name: 'Matchups',
     props: {
       map: Object,
-      teams: Object
+      teams: Object,
+      champions: Array
     },
     components: {
-      ChampionField,
       FinalStatsBlue,
       FinalStatsRed,
     },
     created () {
-      this.getChampions();
     },
     watch: {
     },
     computed: {
+      blueChampions() {
+        return this.champions.filter(c => c.id === this.map.blue_baron_pick || c.id === this.map.blue_jungle_pick || c.id === this.map.blue_mid_pick || c.id === this.map.blue_dragon_pick || c.id === this.map.blue_sup_pick);
+      },
+      redChampions() {
+        return this.champions.filter(c => c.id === this.map.red_baron_pick || c.id === this.map.red_jungle_pick || c.id === this.map.red_mid_pick || c.id === this.map.red_dragon_pick || c.id === this.map.red_sup_pick);
+      }
     },
     data() {
       return {
         teamsList: [this.teams.team1, this.teams.team2],
         blueSidePlayers: [],
         redSidePlayers: [],
-        champions: [],
-        blueChampions: [],
-        redChampions: [],
       }
     },
     methods: {
@@ -137,15 +145,6 @@
       },
       getImg(champion) {
         return require(`@/assets/${champion}.png`);
-      },
-      getChampions() {
-        this.isLoading = true;
-        axios.get('v1/champion').then(res => {
-          this.champions = res.data.champions;
-          this.isLoading = false;
-          this.blueChampions = this.champions.filter(c => c.id === this.map.blue_baron_pick || c.id === this.map.blue_jungle_pick || c.id === this.map.blue_mid_pick || c.id === this.map.blue_dragon_pick || c.id === this.map.blue_sup_pick);
-          this.redChampions = this.champions.filter(c => c.id === this.map.red_baron_pick || c.id === this.map.red_jungle_pick || c.id === this.map.red_mid_pick || c.id === this.map.red_dragon_pick || c.id === this.map.red_sup_pick);
-        });
       },
       save() {
         this.$emit('save', true);
