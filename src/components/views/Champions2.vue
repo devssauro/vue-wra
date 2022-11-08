@@ -452,7 +452,7 @@
       search: {
         champion_id: 1,
         // role: ['mid'],
-        t: null,
+        t: 8,
         patch: null,
         side: null
       },
