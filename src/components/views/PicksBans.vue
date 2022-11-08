@@ -15,7 +15,7 @@
               </v-col>
               <v-col cols="4">
                 <v-autocomplete @change="getRotations" clearable class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c', '3.3']" />
+                  v-model="search.patch" :items="patches" />
               </v-col>
             </v-row>
           </v-sheet>
@@ -238,6 +238,7 @@
       this.getTournaments();
       this.getTeams();
       this.getRotations();
+      this.getPatches();
     },
     data: () => ({
       tab: null,
@@ -248,6 +249,7 @@
       presenceSortBy: ['qty_picks', 'percent_win'],
       presenceSortDesc: [true, true],
       tournaments: [],
+      patches: [],
       bluePicks: [],
       redPicks: [],
       resume: [],
@@ -430,6 +432,22 @@
         {title: 'SUP', tag: 'sup'},
       ],
     }),
+    computed: {
+      axiosParams() {
+        const params = new URLSearchParams();
+        if (this.search.t !== null)
+          params.append('t', this.search.t);
+        if (this.search.team !== null)
+          params.append('team', this.search.team);
+        if (this.search.team !== null)
+          params.append('team', this.search.team);
+        if (this.search.patch !== null)
+          params.append('patch', this.search.patch);
+        params.append('sort', this.search.sort);
+        console.log(params.toString());
+        return params;
+      }
+    },
     methods: {
       updatePickGroupBy(val) {
         this.pickRateGroupBy = val;
@@ -453,6 +471,7 @@
       tournamentChanged(val) { 
         this.getTeams();
         this.getRotations();
+        this.getPatches();
       },
       playerChanged(val) { 
         this.search.player_id = val;
@@ -460,13 +479,13 @@
         this.getAllInfo();
       },
       getPrioRotations() {
-        axios.get(`v1/view/prio`, { params: this.search }).then(res => {
+        axios.get(`v1/view/prio`, { params: this.axiosParams }).then(res => {
           this.resume = res.data.prio;
           this.resumeWR = res.data.prio_wr;
         });
       },
       getBlindRotations() {
-        axios.get(`v1/view/blind`, { params: this.search }).then(res => {
+        axios.get(`v1/view/blind`, { params: this.axiosParams }).then(res => {
           this.blind = res.data.blind;
           this.blindWR = res.data.blind_wr;
           this.response = res.data.response;
@@ -474,19 +493,19 @@
         });
       },
       getPickRotations() {
-        axios.get(`v1/view/picks`, {params: this.search}).then(res => {
+        axios.get(`v1/view/picks`, {params: this.axiosParams}).then(res => {
           this.bluePicks = res.data.blue_picks;
           this.redPicks = res.data.red_picks;
         });
       },
       getBanRotations() {
-        axios.get(`v1/view/bans`, { params: this.search }).then(res => {
+        axios.get(`v1/view/bans`, { params: this.axiosParams }).then(res => {
           this.blueBans = res.data.blue_bans;
           this.redBans = res.data.red_bans;
         });
       },
       getPresence() {
-        axios.get(`v1/view/presence`, { params: this.search }).then(res => {
+        axios.get(`v1/view/presence`, { params: this.axiosParams }).then(res => {
           this.presence = res.data;
         });
       },
@@ -498,8 +517,16 @@
         this.getPresence();
       },
       getTeams() {
-        axios.get(`v1/team`, {params: this.search}).then(res => {
+        axios.get(`v1/team`, {params: this.axiosParams}).then(res => {
           this.teams = res.data.teams;
+        });
+      },
+      getPatches() {
+        axios.get(`v1/patch`, { params: this.axiosParams }).then(res => {
+          const _patch = res.data.patches.filter(p => p === this.search.patch);
+          if (_patch.length === 0)
+            this.search.patch = null;
+          this.patches = res.data.patches;
         });
       },
       getImg(champion) {

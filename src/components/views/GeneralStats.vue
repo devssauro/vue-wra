@@ -15,7 +15,7 @@
               </v-col>
               <v-col cols="4">
                 <v-autocomplete @change="getStats" clearable class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c', '3.3', '3.3']" />
+                  v-model="search.patch" :items="patches" />
               </v-col>
             </v-row>
           </v-sheet>
@@ -195,6 +195,7 @@
       this.getTournaments();
       this.getTeams();
       this.getStats();
+      this.getPatches();
     },
     data: () => ({
       tab: null,
@@ -209,6 +210,7 @@
       teamsStats: [],
       championsStats: [],
       playersStats: [],
+      patches: [],
       teamHeaders: [
         {
           text: 'Time',
@@ -568,6 +570,22 @@
         {title: 'SUP', tag: 'sup'},
       ],
     }),
+    computed: {
+      axiosParams() {
+        const params = new URLSearchParams();
+        if (this.search.t !== null)
+          params.append('t', this.search.t);
+        if (this.search.team !== null)
+          params.append('team', this.search.team);
+        if (this.search.team !== null)
+          params.append('team', this.search.team);
+        if (this.search.patch !== null)
+          params.append('patch', this.search.patch);
+        params.append('sort', this.search.sort);
+        console.log(params.toString());
+        return params;
+      }
+    },
     methods: {
       updatePickGroupBy(val) {
         this.pickRateGroupBy = val;
@@ -591,6 +609,7 @@
       tournamentChanged(val) { 
         this.getTeams();
         this.getStats();
+        this.getPatches();
       },
       playerChanged(val) { 
         this.search.player_id = val;
@@ -598,18 +617,26 @@
         this.getAllInfo();
       },
       getTeamStats() {
-        axios.get(`v1/view/stats/team`, { params: this.search }).then(res => {
+        axios.get(`v1/view/stats/team`, { params: this.axiosParams }).then(res => {
           this.teamsStats = res.data.teams;
         });
       },
       getChampionStats() {
-        axios.get(`v1/view/stats/champion`, { params: this.search }).then(res => {
+        axios.get(`v1/view/stats/champion`, { params: this.axiosParams }).then(res => {
           this.championsStats = res.data.champions;
         });
       },
       getPlayerStats() {
-        axios.get(`v1/view/stats/player`, { params: this.search }).then(res => {
+        axios.get(`v1/view/stats/player`, { params: this.axiosParams }).then(res => {
           this.playersStats = res.data.players;
+        });
+      },
+      getPatches() {
+        axios.get(`v1/patch`, { params: this.axiosParams }).then(res => {
+          const _patch = res.data.patches.filter(p => p === this.search.patch);
+          if (_patch.length === 0)
+            this.search.patch = null;
+          this.patches = res.data.patches;
         });
       },
       getStats() { 
@@ -618,7 +645,7 @@
         this.getPlayerStats();
       },
       getTeams() {
-        axios.get(`v1/team`, {params: this.search}).then(res => {
+        axios.get(`v1/team`, {params: this.axiosParams}).then(res => {
           this.teams = res.data.teams;
         });
       },

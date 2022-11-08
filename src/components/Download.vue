@@ -158,7 +158,7 @@ export default {
     snackbar: false,
     tournaments: [],
     teams: [],
-    route: window.location.host.indexOf('localhost') > -1 ? `http://localhost:5010` : `https://wrflask.dinossauro.dev`,
+    route: window.axios.defaults.baseURL,
     objectiveFieldsValue: 'numeric',
     search: {
       patch: [null],

@@ -10,12 +10,12 @@
                   :items="roles" item-text="title" item-value="tag" />
               </v-col>
               <v-col cols="3">
-                <v-autocomplete clearable @change="getPlayersFromRole" class="px-4 mb-n5" outlined label="Campeonato"
+                <v-autocomplete clearable @change="getPatches" class="px-4 mb-n5" outlined label="Campeonato"
                   v-model="search.t" :items="tournaments" item-text="name" item-value="id" />
               </v-col>
               <v-col cols="3">
                 <v-autocomplete clearable @change="getPlayersFromRole" class="px-4 mb-n5" outlined label="Patch"
-                  v-model="search.patch" :items="['3.2a', '3.2b', '3.2c', '3.3']" />
+                  v-model="search.patch" :items="patches" />
               </v-col>
               <v-col cols="3">
                 <v-autocomplete clearable @change="getPlayersFromRole" class="px-4 mb-n5" outlined label="Side"
@@ -277,6 +277,7 @@
     created() {
       this.getPlayersFromRole('mid');
       this.getTournaments();
+      this.getPatches();
     },
     data: () => ({
       tab: null,
@@ -367,6 +368,7 @@
           value: 'qty_win',
         },
       ],
+      patches: [],
       players: [],
       playerChampions: [],
       championsWith: [],
@@ -378,6 +380,7 @@
         role: 'mid',
         patch: null,
         t: 8,
+        side: null,
       },
       selectedPlayer: {
         id: null,
@@ -431,7 +434,18 @@
       ],
     }),
     computed: {
-      
+      axiosParams() {
+        const params = new URLSearchParams();
+        params.append('role', this.search.role);
+        if (this.search.t !== null)
+          params.append('t', this.search.t);
+        if (this.search.patch !== null)
+          params.append('patch', this.search.patch);
+        if (this.search.side !== null)
+          params.append('side', this.search.side);
+        console.log(params.toString());
+        return params;
+      }
     },
     methods: {
       getTournaments() {
@@ -456,7 +470,7 @@
         this.getAllInfo();
       },
       getPlayersFromRole() {
-        axios.get(`v1/view/player/role/${this.search.role}`, {params: this.search}).then(res => {
+        axios.get(`v1/view/player/role/${this.search.role}`, {params: this.axiosParams}).then(res => {
           this.players = res.data.players;
           const _players = this.players.filter(c => c.id === this.selectedPlayer.id);
           if (this.selectedPlayer.id === null || _players.length === 0)
@@ -466,32 +480,45 @@
         });
       },
       getSideStats() {
-        axios.get(`v1/view/player/${this.selectedPlayer.id}/side`, {params: this.search}).then(res => {
+        axios.get(`v1/view/player/${this.selectedPlayer.id}/side`, {params: this.axiosParams}).then(res => {
           this.sideStats = res.data;
         });
       },
       getTop3() {
-        axios.get(`v1/view/player/${this.selectedPlayer.id}/top3`, {params: this.search}).then(res => {
+        axios.get(`v1/view/player/${this.selectedPlayer.id}/top3`, {params: this.axiosParams}).then(res => {
           this.championsWith = res.data.champions_with;
           this.championsAgainst = res.data.champions_against;
         });
       },
       getChampionMatches(val) {
-        axios.get(`v1/view/player/${this.selectedPlayer.id}/${this.selectedChampion.champion_id}/all_matches`, {params: this.search}).then(res => {
+        axios.get(`v1/view/player/${this.selectedPlayer.id}/${this.selectedChampion.champion_id}/all_matches`, {params: this.axiosParams}).then(res => {
           this.championsWith = res.data.champions_with;
           this.championsAgainst = res.data.champions_against;
         });
       },
       getChampions() {
-        axios.get(`v1/view/player/${this.selectedPlayer.id}/champions`, {params: this.search}).then(res => {
+        axios.get(`v1/view/player/${this.selectedPlayer.id}/champions`, {params: this.axiosParams}).then(res => {
           this.playerChampions = res.data.champions;
           this.selectedChampion = this.playerChampions[0];
           this.search.champion_id = this.selectedChampion.champion_id;
           this.avg_stats = res.data.general;
         });
       },
+      getPatches() {
+        axios.get(`v1/patch`, { params: this.axiosParams }).then(res => {
+          const _patch = res.data.patches.filter(p => p === this.search.patch);
+          if (_patch.length === 0)
+            this.search.patch = null;
+          this.patches = res.data.patches;
+          this.getPlayersFromRole();
+        });
+      },
       getImg(champion) {
         return require(`@/assets/${champion}.png`);
+      },
+      tournamentChanged() {
+        this.getPatches();
+        this.getChampions();
       },
       getAllInfo() {
         this.getSideStats();

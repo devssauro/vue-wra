@@ -567,12 +567,6 @@
           this.sideStats = res.data;
         });
       },
-      getTop3() {
-        axios.get(`v1/view/champion/${this.selectedChampion.id}/top3`, {params: this.axiosParams}).then(res => {
-          this.teams_with = res.data.teams_with;
-          this.teams_against = res.data.teams_against;
-        });
-      },
       getAllMatches() {
         axios.get(`v1/view/champion/${this.selectedChampion.id}/all_matches`, {params: this.axiosParams}).then(res => {
           this.championsWith = res.data.champions_with;

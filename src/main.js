@@ -8,7 +8,7 @@ Vue.config.productionTip = false;
 
 window.axios = axios;
 // window.axios.defaults.baseURL = process.env.VUE_APP_API_URL;
-window.axios.defaults.baseURL = window.location.host.indexOf('localhost') > -1 ? `http://localhost:5010` : `https://wildriftanalytics-v2.uc.r.appspot.com/`;
+window.axios.defaults.baseURL = window.location.host.indexOf('localhost') > -1 ? `http://localhost:5010` : `https://wrflask2.dinossauro.dev/`;
 // window.axios.defaults.baseURL = `https://wrabf.dinossauro.dev`;
 const token = localStorage.getItem('auth_token');
 const csrf = localStorage.getItem('csrf_token');
