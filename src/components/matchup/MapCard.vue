@@ -13,13 +13,16 @@
       <v-list-item @click="viewMap(matchup.id, map.id)">
         <v-list-item-title>Visualizar jogo</v-list-item-title>
       </v-list-item>
+      <v-list-item @click="openVod">
+        <v-list-item-title>Abrir VOD</v-list-item-title>
+      </v-list-item>
       <v-divider />
       <v-list-item @click="editMap(matchup.id, map.id)"> 
         <v-list-item-title>Editar</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
-  <v-card :color="`${map.winner_side} darken-3`" v-else>
+  <v-card @click="openVod" :color="`${map.winner_side} darken-3`" v-else>
     <v-card-title>
       {{matchup[map.winner].tag}}
       <v-spacer />
@@ -57,6 +60,11 @@
       }
     },
     methods: {
+      openVod() {
+        if (this.map.vod_link !== undefined && this.map.vod_link !== null) {
+          window.open(this.map.vod_link, '_blank');
+        }
+      },
       viewMap(matchupId, mapId) {
         this.$emit('viewMap', {matchupId: matchupId, mapId: mapId});
       },

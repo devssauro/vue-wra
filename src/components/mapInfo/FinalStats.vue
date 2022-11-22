@@ -31,6 +31,12 @@
                   label="Lado Vencedor"
                   outlined/>
               </v-col>
+              <v-col class="py-0" cols="12">
+                <v-text-field dense
+                  v-model="map.vod_link"
+                  label="Link do VOD"
+                  outlined/>
+              </v-col>
             </v-row>
           </v-card-title>
         </v-card>
