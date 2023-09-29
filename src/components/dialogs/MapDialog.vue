@@ -97,7 +97,7 @@
           red_mid_player: null,
           red_dragon_player: null,
           red_sup_player: null,
-          patch: '3.4b',
+          patch: '4.3c',
         },
       }
     },

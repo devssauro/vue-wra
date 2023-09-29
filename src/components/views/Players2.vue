@@ -379,7 +379,7 @@
         champion_id: null,
         role: 'mid',
         patch: null,
-        t: 8,
+        t: 1,
         side: null,
       },
       selectedPlayer: {
@@ -453,6 +453,7 @@
           this.tournaments = res.data.tournaments.map(m => {
             return m;
           });
+          this.search.t = this.tournaments[0].id;
         });
       },
       championChanged(val) { 

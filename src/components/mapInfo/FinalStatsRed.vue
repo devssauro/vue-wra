@@ -49,7 +49,7 @@ export default {
       const champion = this.champions.filter(c => c.id == championId);
       if (champion.length === 0)
         return
-      return require(`@/assets/${champion[0].name}.png`);
+      return champion[0].avatar;
     },
     championChanged(val) {
       this.$emit('change', {id: val, field: this.field});
@@ -57,7 +57,8 @@ export default {
       this.$mount();
     },
     getImg(champion) {
-      return require(`@/assets/${champion}.png`);
+      this.champions.filter(c => c.id === champion)[0].avatar;
+      // return require(`@/assets/${champion}.png`);
     },
   }
 }

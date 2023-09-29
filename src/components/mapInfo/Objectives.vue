@@ -229,7 +229,7 @@
         ],
         towerRoutes: ['baron', 'mid', 'dragon'],
         roles: ['baron', 'jungle', 'mid', 'dragon', 'sup'],
-        drakes: ['infernal', 'mountain', 'ocean']
+        drakes: ['infernal', 'mountain', 'ocean', 'ice']
       }
     },
     methods: {

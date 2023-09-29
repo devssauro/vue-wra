@@ -124,7 +124,7 @@
                       hide-default-footer @update:group-by="updatePickGroupBy">
                       <template v-slot:[`item.champion_name`]="{ item }">
                         <v-avatar rounded size="32" v-if="item.champion_name !== underfined">
-                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                          <img :alt="item.champion" :src="item.avatar">
                         </v-avatar>
                         <span class="pl-2 mr-2 subtitle-1">
                           {{item.champion_name}}
@@ -555,7 +555,7 @@
       ],
       search: {
         patch: null,
-        t: 8,
+        t: 1,
         team: null,
         sort: 'name'
       },
@@ -604,6 +604,7 @@
           this.tournaments = res.data.tournaments.map(m => {
             return m;
           });
+          this.search.t = this.tournaments[0].id
         });
       },
       tournamentChanged(val) { 

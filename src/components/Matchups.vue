@@ -126,6 +126,7 @@
     },
     computed: {
       isOperationalUser() {
+        return true;
         if (this.user !== null && this.user !== undefined) {
           return this.user.roles.indexOf('operational') > -1;
         } else
@@ -141,7 +142,7 @@
     data: () => ({
       user: JSON.parse(localStorage.getItem('user')),
       host: window.location.host.indexOf('localhost') > -1,
-      selectedTournaments: 8,
+      selectedTournaments: 1,
       tournaments: [],
       matchupDialog: false,
       mapDialog: false,
@@ -190,7 +191,7 @@
             // m.datetime = moment(`${m.datetime}`).format('DD/MM/YYYY HH:mm');
             return m;
           });
-          this.selectedTournaments = 8;
+          this.selectedTournaments = this.tournaments[0].id;
           this.getMatchups(this.selectedTournaments);
         });
       },

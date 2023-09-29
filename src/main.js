@@ -12,6 +12,7 @@ window.axios.defaults.baseURL = window.location.host.indexOf('localhost') > -1 ?
 // window.axios.defaults.baseURL = `https://wrabf.dinossauro.dev`;
 const token = localStorage.getItem('auth_token');
 const csrf = localStorage.getItem('csrf_token');
+
 if (token)
   window.axios.defaults.headers.common['Authentication-Token'] = token;
 

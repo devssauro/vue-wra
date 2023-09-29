@@ -39,7 +39,7 @@
                     <v-container>
                       <v-row align="start">
                         <v-avatar size="100" rounded>
-                          <img :alt="selectedChampion.name" :src="getImg(selectedChampion.name)">
+                          <img :alt="selectedChampion.name" :src="selectedChampion.avatar">
                         </v-avatar>
                         <v-col cols="8" class="py-0">
                           <p class="display-1">
@@ -138,7 +138,7 @@
                       :sort-by="['qty_win', 'qty_match']" :sort-desc="[true, true]">
                       <template v-slot:[`item.champion_name`]="{ item }">
                         <v-avatar rounded size="36">
-                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                          <img :alt="item.champion" :src="item.avatar">
                         </v-avatar>
                         <span class="pl-2 subtitle-1">
                           {{item.champion_name}}
@@ -161,7 +161,7 @@
                       :sort-by="['qty_win', 'qty_match']" :sort-desc="[true, true]">
                       <template v-slot:[`item.champion_name`]="{ item }">
                         <v-avatar rounded size="36">
-                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                          <img :alt="item.champion" :src="item.avatar">
                         </v-avatar>
                         <span class="pl-2 subtitle-1">
                           {{item.champion_name}}
@@ -452,13 +452,14 @@
       search: {
         champion_id: 1,
         // role: ['mid'],
-        t: 8,
+        t: 1,
         patch: null,
         side: null
       },
       selectedChampion: {
-        id: null,
+        id: 2,
         name: 'Ahri',
+        avatar: ""
       },
       snackText: '',
       snackbar: false,
@@ -528,6 +529,7 @@
       getTournaments() {
         axios.get('v1/tournament').then(res => {
           this.tournaments = res.data.tournaments;
+          this.search.t = this.tournaments[0].id;
         });
       },
       roleChanged() {

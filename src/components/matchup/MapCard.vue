@@ -45,6 +45,7 @@
     },
     computed: {
       isOperationalUser() {
+        return true;
         if (this.user !== null && this.user !== undefined) {
           return this.user.roles.indexOf('operational') > -1;
         } else

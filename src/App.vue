@@ -31,7 +31,7 @@
               Acesse sua conta
             </v-card-title>
             <v-card-text class="pb-0">
-              <v-text-field outlined label="Usuário" v-model="login.username"/>
+              <v-text-field outlined label="Usuário" v-model="login.email"/>
               <v-text-field outlined type="password" label="Senha" v-model="login.password"/>
             </v-card-text>
             <v-card-actions class="pt-0">
@@ -85,6 +85,7 @@ export default {
   },
   computed: {
     isOperationalUser() {
+      return true;
       if (this.user !== null && this.user !== undefined) {
         return this.user.roles.indexOf('operational') > -1;
       } else

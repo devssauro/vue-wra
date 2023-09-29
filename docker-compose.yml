@@ -12,4 +12,4 @@ services:
       - .:$HOME
     environment:
       NODE_ENV: development
-    command: ["npm", "run", "serve"]
+      CHOKIDAR_USEPOLLING: "true"  # Enable polling for file watching

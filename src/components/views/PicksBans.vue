@@ -114,7 +114,7 @@
                     @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
+                        <img :alt="item.champion" :src="item.avatar">
                       </v-avatar>
                       <span class="pl-2 subtitle-1">
                         {{item.champion_name}}
@@ -131,7 +131,7 @@
                     @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
+                        <img :alt="item.champion" :src="item.avatar">
                       </v-avatar>
                       <span class="pl-2 subtitle-1">
                         {{item.champion_name}}
@@ -152,7 +152,7 @@
                     @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
+                        <img :alt="item.champion" :src="item.avatar">
                       </v-avatar>
                       <span class="pl-2 subtitle-1">
                         {{item.champion_name}}
@@ -169,7 +169,7 @@
                     @update:sort-by="updatePicksBansSortBy">
                     <template v-slot:item.champion_name="{ item }">
                       <v-avatar rounded size="36">
-                        <img :alt="item.champion" :src="getImg(item.champion_name)">
+                        <img :alt="item.champion" :src="item.avatar">
                       </v-avatar>
                       <span class="pl-2 subtitle-1">
                         {{item.champion_name}}
@@ -193,7 +193,7 @@
                       @update:sort-desc="updatePresenceSortDesc">
                       <template v-slot:[`item.champion_name`]="{ item }">
                         <v-avatar rounded size="36">
-                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                          <img :alt="item.champion" :src="item.avatar">
                         </v-avatar>
                         <!-- <span class="pl-2 subtitle-1">
                     {{item.champion_name}}
@@ -201,7 +201,7 @@
                       </template>
                       <template v-slot:[`item.champion_name`]="{ item }">
                         <v-avatar rounded size="36">
-                          <img :alt="item.champion" :src="getImg(item.champion_name)">
+                          <img :alt="item.champion" :src="item.avatar">
                         </v-avatar>
                       </template>
                     </v-data-table>
@@ -417,7 +417,7 @@
       ],
       search: {
         patch: null,
-        t: 8,
+        t: 1,
         team: null,
         sort: 'name'
       },
@@ -466,6 +466,7 @@
           this.tournaments = res.data.tournaments.map(m => {
             return m;
           });
+          this.search.t = this.tournaments[0].id;
         });
       },
       tournamentChanged(val) { 
